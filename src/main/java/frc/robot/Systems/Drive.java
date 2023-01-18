@@ -16,7 +16,6 @@
    // Initialize Joysticks
    public static Joystick driverController;
  
-   public static boolean go = false;
  
    public static CANSparkMax lDrive1;
    public static CANSparkMax rDrive1;
@@ -31,12 +30,14 @@
    public static float minMin = 0.05f;
    public static float Kp = -0.01f;
    
-   public static void init(Joystick boystick) {
-     driverController = boystick;
+   public static void init() {
      
-     lDrive0 = new CANSparkMax(24, MotorType.kBrushless);
-     rDrive0 = new CANSparkMax(22, MotorType.kBrushless);
-     lDrive1 = new CANSparkMax(23, MotorType.kBrushless);
+    driverController = new Joystick(0);
+
+     
+     lDrive0 = new CANSparkMax(22, MotorType.kBrushless);
+     rDrive0 = new CANSparkMax(23, MotorType.kBrushless);
+     lDrive1 = new CANSparkMax(20, MotorType.kBrushless);
      rDrive1 = new CANSparkMax(21, MotorType.kBrushless);
  
      // for new robot 1 ld0, 4 rd0, 2 ld1,3rd1
@@ -50,7 +51,9 @@
    }
  
    public static void periodic (){
+
      speed = (1+(-driverController.getRawAxis(3)))/2;
+
          
      x = driverController.getRawAxis(0);
      y = driverController.getRawAxis(1);

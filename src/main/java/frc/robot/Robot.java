@@ -75,7 +75,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    Drive.init();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
