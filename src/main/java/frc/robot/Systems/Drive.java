@@ -17,6 +17,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.*;
 
+import java.lang.Math;
+
+import edu.wpi.first.wpilibj.I2C;
+
 public class Drive {
 	
 	public static double Gx, Gy, Gz, Ax, Ay, Az;
@@ -37,6 +41,10 @@ public class Drive {
 
 	public static double[] g = {Gx, Gy, Gz};
 	public static double[] a = {Ax, Ay, Az};
+
+	public static double mass;
+
+	public static I2C arduino;
 		
 	
 	public static void init() {
@@ -64,6 +72,9 @@ public class Drive {
 		rDrive0Endocer = rDrive0.getEncoder();
 		lDrive0Encoder = lDrive0.getEncoder();
 
+		arduino = new I2C(I2C.Port.kOnboard, 8); //Sets up the Arduino over I2C on port 8
+
+
 	}
 	
 	public static void periodic (double x, double y, double speed){
@@ -78,25 +89,24 @@ public class Drive {
 		Ay = SmartDashboard.getNumber("Ay", 0);
 		Az = SmartDashboard.getNumber("Az", 0);
 
+		byte[] sendData = "Gimme my data".getBytes(); //Data sent to the Arduino
+		byte[] receiveData = new byte[12]; // Bytes requested from Arduino
+		arduino.transaction(sendData, sendData.length, receiveData, receiveData.length); // Sends and Receives the Data to and from the Arduino
+		System.out.println("Received: " + new String(receiveData, 0, receiveData.length)); //Prints the data received from the Arduino on the console
+		System.out.println("b");
+
 	}
 
-	// public static void gyro(){
-	// 	 setpoint = math(g, a);
-	// 	//sets the motors to the correct speed based on out angle using PID control
-	// 	rDrive0.set(pid.calculate(rDrive0Endocer.getVelocity(), setpoint));
-	// 	lDrive0.set(pid.calculate(lDrive0Encoder.getVelocity(), setpoint));
-	// }
+	public static void gyro(){
+		 setpoint = math(Gy);
+		//sets the motors to the correct speed based on out angle using PID control
+		rDrive0.set(pid.calculate(rDrive0Endocer.getVelocity(), setpoint));
+		lDrive0.set(pid.calculate(lDrive0Encoder.getVelocity(), setpoint));
+	}
 
-	// /***
-	//  * 
-	//  * @param class1 An Array of doubles, Gx, Gy, Gz,
-	//  * @param class2 An Array of doubles, Ax, Ay, Az,
-	//  * @return math
-	//  */
-	// public static double math(double[] g, double[] a){
-	// 	System.out.println(a);
-	// 	System.out.println(g);
-	// 	return 0.2;
-	// }
+
+	public static double math(double Gy){
+		return 9.81 * mass * Math.sin(Gy);
+	}
  
 }
