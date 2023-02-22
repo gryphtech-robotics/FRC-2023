@@ -50,7 +50,7 @@ public class Drive {
 	public static void init() {
 		
 		//sets the motor controllers to a instance of the Sparkmax Class
-		lDrive0 = new CANSparkMax(29, MotorType.kBrushless);
+		lDrive0 = new CANSparkMax(22, MotorType.kBrushless);
 		rDrive0 = new CANSparkMax(23, MotorType.kBrushless);
 		lDrive1 = new CANSparkMax(20, MotorType.kBrushless);
 		rDrive1 = new CANSparkMax(21, MotorType.kBrushless);
