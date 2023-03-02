@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Systems.Drive;
+import frc.robot.Systems.Arm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -78,6 +79,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Drive.init();
     OI.init();
+    Arm.init();
   }
 
   /** This function is called periodically during operator control. */
