@@ -32,7 +32,7 @@ public class Arm {
 
     public static void up(){
         System.out.println("bal");
-        arm1.set(-0.1);
+        arm1.set(1);
     }
 
     public static void down(){
