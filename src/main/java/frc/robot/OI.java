@@ -5,6 +5,7 @@ import java.lang.Math;
 import frc.robot.Systems.Drive;
 import frc.robot.Systems.Gyro;
 import frc.robot.Systems.Arm;
+import frc.robot.Systems.Clamp;
 
 
 public class OI {
@@ -23,19 +24,32 @@ public class OI {
         
         Drive.periodic(driverController.getRawAxis(0), driverController.getRawAxis(1), (1+(-driverController.getRawAxis(3)))/2);
 
-        if(driverController.getRawButton(4)){
+        if(driverController.getRawButton(6)){
             System.out.println("g");
-            Arm.periodic(0.2, 0);
+           Arm.up();
+
         }else{
-            Arm.periodic(0, 0);
+
+           Arm.stop();
         }
 
-        if(driverController.getRawButton(6)){
+        if(driverController.getRawButton(4)){
             System.out.println("h");
-            Arm.periodic(-0.1, 1);
+            Arm.down();
         }else{
-            Arm.periodic(0, 0);
+            Arm.stop();
         }
+
+        if (driverController.getRawButton(5)){
+            Clamp.in();
+        }else if(driverController.getRawButton(3)){
+            Clamp.out();
+        }else{
+            Clamp.stop();
+        }
+
+
+        
     }
 
 }
