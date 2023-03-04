@@ -5,10 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Systems.Drive;
 import frc.robot.Systems.Arm;
+import frc.robot.Systems.Clamp;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    m_autoSelected = "peaky balls";//m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
   }
@@ -69,7 +71,15 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
+          Arm.toBottom();
+          Clamp.allOut();
+          int i = 0;
+
+          Drive.drive(0.3);
+
+          Timer.delay(3);
+          Drive.stop();
+
         break;
     }
   }
@@ -80,12 +90,14 @@ public class Robot extends TimedRobot {
     Drive.init();
     OI.init();
     Arm.init();
+    Clamp.init();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     OI.periodic();
+    //Arm.periodic();
   }
 
   /** This function is called once when the robot is disabled. */

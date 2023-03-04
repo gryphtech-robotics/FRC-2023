@@ -1,6 +1,9 @@
 package frc.robot.Systems;
 
+import javax.swing.SortingFocusTraversalPolicy;
+
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +12,8 @@ public class Arm {
 
     public static CANSparkMax arm1;
     public static CANSparkMax arm2;
+
+    public static RelativeEncoder encoder;
 
     public static void init(){
         arm1 = new CANSparkMax(61, MotorType.kBrushless);
@@ -19,28 +24,42 @@ public class Arm {
 
         arm2.follow(arm1);
 
+        encoder = arm1.getEncoder();
+
+        encoder.setPositionConversionFactor(360/42);
+        encoder.setPosition(0);
+
     }
 
 
-
-    public static void periodic(double speed, int setting){
-        arm1.set(speed);
-
-        SmartDashboard.putNumber("speed", speed);
-    
-    }
 
     public static void up(){
-        System.out.println("bal");
-        arm1.set(1);
+        arm1.set(0.2);
+
+
     }
 
     public static void down(){
-        arm1.set(-0.1);
+
+
+
+        arm1.set(-0.2);
     }
 
     public static void stop(){
         arm1.set(0);
+    }
+
+    public static void toBottom(){
+        while ( encoder.getPosition() > -110) {
+            arm1.set(0.1);
+        }
+    }
+    
+    public static double periodic(){
+        System.out.println(encoder.getPosition());
+        return encoder.getPosition();
+
     }
 
 //     /**

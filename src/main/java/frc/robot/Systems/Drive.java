@@ -55,6 +55,14 @@ public class Drive {
 
 	}
 
+	public static void drive (double speed) {
+		rDrive0.set(speed);
+		lDrive0.set(speed);
+	}
 
+	public static void stop () {
+		rDrive0.set(0);
+		lDrive0.set(0);
+	}
  
 }
