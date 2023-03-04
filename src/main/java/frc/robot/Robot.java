@@ -13,7 +13,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         robotContainer = new RobotContainer();
 
-        System.out.println("Robot initializing");
+        System.out.println("Robot initializing.");
     }
 
     @Override
