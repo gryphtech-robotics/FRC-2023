@@ -57,31 +57,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = "peaky balls";//m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-          Arm.toBottom();
-          Clamp.allOut();
-          int i = 0;
+      Arm.toBottom();
+      Clamp.allOut();
+      int i = 0;
 
-          Drive.drive(0.3);
+      Drive.drive(0.3);
 
-          Timer.delay(3);
-          Drive.stop();
-
-        break;
-    }
+      Timer.delay(3);
+      Drive.stop();
   }
 
   /** This function is called once when teleop is enabled. */
