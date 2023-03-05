@@ -1,15 +1,21 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
-    private final CANSparkMax arm0 = new CANSparkMax(61, MotorType.kBrushless);
-    private final CANSparkMax arm1 = new CANSparkMax(31, MotorType.kBrushless);
+    private final CANSparkMax arm0 = new CANSparkMax(Constants.CanIDs.ARM_0, MotorType.kBrushless);
+    private final CANSparkMax arm1 = new CANSparkMax(Constants.CanIDs.ARM_1, MotorType.kBrushless);
+
     private final RelativeEncoder encoder = arm0.getEncoder();
+    private final SparkMaxPIDController pidController = arm0.getPIDController();
 
     private double relativeMotorPos = 0;
 
@@ -19,8 +25,12 @@ public class Arm extends SubsystemBase {
 
         arm1.follow(arm0);
 
-        encoder.setPositionConversionFactor(360/42);
+        encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
         encoder.setPosition(0);
+
+        pidController.setFeedbackDevice(encoder);
+        //pidController.setFF(Constants.PID.ARM_FF);
+        pidController.setP(Constants.PID.ARM_P);
     }
 
     /**
@@ -55,10 +65,14 @@ public class Arm extends SubsystemBase {
      * @param newPos New motor position.
      * @return
      */
-    public void setPos(int direction, double curPos, double newPos) {
+    public void setEncoderPosValue(int direction, double curPos, double newPos) {
         if(direction == -1)
             relativeMotorPos = curPos - newPos;
         else if(direction == 1)
             relativeMotorPos = curPos + newPos;
+    }
+
+    public void setPos(double position) {
+        pidController.setReference(position, ControlType.kPosition);
     }
 }

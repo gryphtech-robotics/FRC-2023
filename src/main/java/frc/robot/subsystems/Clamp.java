@@ -5,10 +5,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CanIDs;
+import frc.robot.Constants.etcIDs;
 
 public class Clamp extends SubsystemBase {
-    private final TalonFX talon = new TalonFX(46);
-    private final DigitalInput input = new DigitalInput(0);
+    private final TalonFX talon = new TalonFX(CanIDs.CLAMP_TALON);
+    private final DigitalInput input = new DigitalInput(etcIDs.CLAMP_LIMIT);
 
     public Clamp() {
         talon.setSelectedSensorPosition(0);

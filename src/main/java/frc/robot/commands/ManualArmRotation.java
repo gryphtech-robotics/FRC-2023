@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Arm;
 
-public class ArmRotation extends CommandBase {
+public class ManualArmRotation extends CommandBase {
     private final Arm arm;
     private final DoubleSupplier commander;
 
-    public ArmRotation(Arm arm, DoubleSupplier commander) {
+    public ManualArmRotation(Arm arm, DoubleSupplier commander) {
         this.arm = arm;
         this.commander = commander;
     }
@@ -21,18 +21,27 @@ public class ArmRotation extends CommandBase {
     @Override
     public void execute() {
         if(commander.getAsDouble() == 200)
-            if(arm.getPos() <= -10) {
+            arm.setSpeed(0.2);
+        else if(commander.getAsDouble() == 400)
+            arm.setSpeed(-0.2);
+        else 
+            arm.setSpeed(0.0);
+    }
+
+    private void executeWithLimits() {
+        if (commander.getAsDouble() == 200)
+            if (arm.getPos() <= -10) {
                 arm.setSpeed(0.2);
                 handlePosition(1);
             } else
                 arm.setSpeed(0.0);
-        else if(commander.getAsDouble() == 400)
-            if(arm.getPos() >= 110) {
+        else if (commander.getAsDouble() == 400)
+            if (arm.getPos() >= 110) {
                 arm.setSpeed(-0.2);
                 handlePosition(-1);
             } else
                 arm.setSpeed(0.0);
-        else 
+        else
             arm.setSpeed(0.0);
     }
 
@@ -41,7 +50,7 @@ public class ArmRotation extends CommandBase {
      * @param pos Pass through negative or positive one signalling direction. 
      */
     private void handlePosition(int pos) {
-        arm.setPos(pos, arm.getPos(), arm.getRawPos());
+        arm.setEncoderPosValue(pos, arm.getPos(), arm.getRawPos());
     }
 
     @Override
