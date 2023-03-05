@@ -14,8 +14,8 @@ public class DriveForTime extends CommandBase {
     private final DriveBase driveBase;
     private final double speed;
 
-    private int counter = 0;
-    private int target = 0;
+    private double time = 0;
+    private double target = 0;
 
     /**
      * Please note that speed must be a fraction, because throttle is assumed to be a value of 1.
@@ -23,24 +23,24 @@ public class DriveForTime extends CommandBase {
     public DriveForTime(DriveBase driveBase, double speed, double seconds) {
         this.driveBase = driveBase;
         this.speed = speed;
-
-        // Convert time in seconds to robot cycles (50 cycles/s)
-        target = (int) (seconds * 50);
+        this.target = seconds;
 
         addRequirements(driveBase);
     }
 
     @Override
-    public void execute() {
-        if (counter < target)
-            counter++;
+    public void initialize() {
+        target = Timer.getFPGATimestamp();
+    }
 
+    @Override
+    public void execute() {
         driveBase.setSpeed(speed, 1);
     }
 
     @Override
     public boolean isFinished() {
-        return counter >= target;
+        return time >= target;
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         robotContainer = new RobotContainer();
 
-        System.out.println("Robot initializing.");
+        System.out.println("### Robot initializing. ###");
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
             autonomousCommand.schedule();
         }
 
-        System.out.println("Entering autonomous period.");
+        System.out.println("### Entering autonomous period. ###");
     }
 
     @Override
@@ -38,13 +38,13 @@ public class Robot extends TimedRobot {
             autonomousCommand.cancel();
         }
 
-        System.out.println("Entering teleop period.");
+        System.out.println("### Entering teleop period. ###");
     }
 
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
 
-        System.out.println("Entering testing mode.");
+        System.out.println("### Entering testing mode. ###");
     }
 }
