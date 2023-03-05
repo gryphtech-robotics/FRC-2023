@@ -3,15 +3,9 @@ package frc.robot;
 
 public class Constants {
     public static class Controls {
-        public static final int JOYSTICK_X_AXIS = 3;
         public static final int JOYSTICK_Y_AXIS = 0;
-        public static final int JOYSTICK_THROTTLE = 1;
-
-        public static final int CLAMP_OPEN = 4;
-        public static final int CLAMP_CLOSE = 5; 
-
-        public static final int ARM_UP = 4;
-        public static final int ARM_DOWN = 1;
+        public static final int JOYSTICK_X_AXIS = 1;
+        public static final int JOYSTICK_THROTTLE = 3;
     }
 
     public static class USB {

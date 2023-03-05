@@ -20,18 +20,18 @@ public class RobotContainer {
     private final Clamp clamp = new Clamp();
 
     public RobotContainer() {
-        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> (1 + (-DriveController.getRawAxis(Controls.JOYSTICK_X_AXIS))) / 2, () -> DriveController.getRawAxis(Controls.JOYSTICK_Y_AXIS), () -> DriveController.getRawAxis(Controls.JOYSTICK_THROTTLE)));
+        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getRawAxis(Controls.JOYSTICK_X_AXIS), () -> DriveController.getRawAxis(Controls.JOYSTICK_Y_AXIS), () -> (1 + (-DriveController.getRawAxis(Controls.JOYSTICK_THROTTLE))) / 2));
 
-        CopilotController.leftBumper().onTrue(new InstantCommand(() -> new ClampMovement(clamp, () -> 200)));
-        CopilotController.rightBumper().onTrue(new InstantCommand(() -> new ClampMovement(clamp, () -> 400)));
+        CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 200));
+        CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, 400));
 
-        CopilotController.y().onTrue(new InstantCommand(() -> new ManualArmRotation(arm, () -> 200)));
-        CopilotController.a().onTrue(new InstantCommand(() -> new ManualArmRotation(arm, () -> 200)));
+        CopilotController.y().whileTrue(new ManualArmRotation(arm, 200));
+        CopilotController.a().whileTrue(new ManualArmRotation(arm, 400));
     }
 
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(
-            new InstantCommand(() -> new DriveForTime(driveBase, 0.4, 4))
+            new DriveForTime(driveBase, 0.4, 4)
             //new InstantCommand(() -> arm.setPos(30))
         );
     }

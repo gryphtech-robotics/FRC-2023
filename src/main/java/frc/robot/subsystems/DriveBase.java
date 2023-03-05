@@ -13,7 +13,7 @@ public class DriveBase extends SubsystemBase {
     private final CANSparkMax left1 = new CANSparkMax(CanIDs.LEFT_DRIVE_1, MotorType.kBrushless);
     private final CANSparkMax right1 = new CANSparkMax(CanIDs.RIGHT_DRIVE_1, MotorType.kBrushless);
 
-    private final DifferentialDrive drive = new DifferentialDrive(left0, right0);
+    //private final DifferentialDrive drive = new DifferentialDrive(left0, right0);
 
     public DriveBase() {
         left0.restoreFactoryDefaults();
@@ -35,7 +35,7 @@ public class DriveBase extends SubsystemBase {
      */
     public void setSpeed(double x, double y, double throttle) {
         left0.set((x + y) * throttle);
-        right0.set((x + y) * throttle);
+        right0.set((x - y) * throttle);
     }
 
     /**
@@ -57,6 +57,6 @@ public class DriveBase extends SubsystemBase {
     public void setSpeed(double throttle, double rotation, boolean squareInputs) {
         rotation *= -1;
 
-        drive.arcadeDrive(throttle, rotation, squareInputs);
+        //drive.arcadeDrive(throttle, rotation, squareInputs);
     }
 }

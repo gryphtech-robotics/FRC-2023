@@ -1,17 +1,17 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Clamp;
 
 public class ClampMovement extends CommandBase {
     private final Clamp clamp;
-    private final DoubleSupplier commander;
+    private final double opCode;
 
-    public ClampMovement(Clamp clamp, DoubleSupplier commander) {
+    public ClampMovement(Clamp clamp, double opCode) {
         this.clamp = clamp;
-        this.commander = commander;
+        this.opCode = opCode;
 
         addRequirements(clamp);
     }
@@ -22,13 +22,13 @@ public class ClampMovement extends CommandBase {
      */
     @Override
     public void execute() {
-        if(commander.getAsDouble() == 200) 
-            if(checkValidity())
-                clamp.setSpeed(0.1);
+        if(opCode == 200) {
+            if(!clamp.getLimit())
+                clamp.setSpeed(-0.1);
             else
                 clamp.setSpeed(0.0);
-        else if(commander.getAsDouble() == 400)
-            clamp.setSpeed(-0.1);
+        } else if(opCode == 400)
+            clamp.setSpeed(0.1);
         else
             clamp.setSpeed(0.0);
     }
@@ -38,14 +38,8 @@ public class ClampMovement extends CommandBase {
         return false;
     }
 
-    /**
-     * Checks the limit switch to see if it's being pressed, and if the command is to open then it will ignore it.
-     * @return boolean
-     */
-    private boolean checkValidity() {
-        if(clamp.getLimit() && commander.getAsDouble() == 400)
-            return false;
-        else 
-            return true;
+    @Override
+    public void end(boolean interrupted) {
+        clamp.setSpeed(0.0);
     }
 }
