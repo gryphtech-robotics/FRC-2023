@@ -7,6 +7,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,20 +18,23 @@ public class Arm extends SubsystemBase {
     private final RelativeEncoder encoder = arm0.getEncoder();
     private final SparkMaxPIDController pidController = arm0.getPIDController();
 
-    private double relativeMotorPos = 0;
-
     public Arm() {
         arm0.restoreFactoryDefaults();
         arm1.restoreFactoryDefaults();
 
         arm1.follow(arm0);
+        
+        pidController.setFeedbackDevice(encoder);
+        pidController.setP(Constants.PID.ARM_P);
 
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
         encoder.setPosition(0);
+    }
 
-        pidController.setFeedbackDevice(encoder);
-        //pidController.setFF(Constants.PID.ARM_FF);
-        pidController.setP(Constants.PID.ARM_P);
+    @Override
+    public void periodic() {
+        //System.out.println(getRawPos());
+        SmartDashboard.putNumber("rawEncoderPos", this.getRawPos());
     }
 
     /**
@@ -48,28 +52,6 @@ public class Arm extends SubsystemBase {
      */
     public double getRawPos() {
         return encoder.getPosition();
-    }
-
-    /**
-     * Get the relative encoder position of the arm.
-     * @return value
-     */
-    public double getPos() {
-        return relativeMotorPos;
-    }
-
-    /**
-     * Tracks the motor encoder position in a relative manner.
-     * @param direction 1 is going up, -1 is going down.
-     * @param curPos "Current" encoder position.
-     * @param newPos New motor position.
-     * @return
-     */
-    public void setEncoderPosValue(int direction, double curPos, double newPos) {
-        if(direction == -1)
-            relativeMotorPos = curPos - newPos;
-        else if(direction == 1)
-            relativeMotorPos = curPos + newPos;
     }
 
     public void setPos(double position) {
