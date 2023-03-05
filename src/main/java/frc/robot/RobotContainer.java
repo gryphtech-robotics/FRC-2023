@@ -24,6 +24,8 @@ public class RobotContainer {
 
         CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 200));
         CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, 400));
+        
+        CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos())));
 
         CopilotController.y().whileTrue(new ManualArmRotation(arm, 200));
         CopilotController.a().whileTrue(new ManualArmRotation(arm, 400));
@@ -32,6 +34,8 @@ public class RobotContainer {
         CopilotController.povUp().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
+
+
     }
 
     public Command getAutonomousCommand() {
