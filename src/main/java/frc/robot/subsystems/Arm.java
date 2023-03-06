@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
@@ -16,6 +17,8 @@ public class Arm extends SubsystemBase {
 
     private final RelativeEncoder encoder = arm0.getEncoder();
     private final SparkMaxPIDController pidController = arm0.getPIDController();
+
+    private double cachedRefPos = 0.0;
 
     public Arm() {
         arm0.restoreFactoryDefaults();
@@ -27,13 +30,13 @@ public class Arm extends SubsystemBase {
         pidController.setP(Constants.PID.ARM_P);
 
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
-        encoder.setPosition(0);
+        encoder.setPosition(0.0);
     }
 
     @Override
     public void periodic() {
-        //System.out.println(getRawPos());
-        SmartDashboard.putNumber("rawEncoderPos", this.getRawPos());
+        SmartDashboard.putNumber("ArmEncoderPosition", getRawPos());
+        SmartDashboard.putNumber("ArmEncoderTarget", cachedRefPos);
     }
 
     /**
@@ -42,6 +45,7 @@ public class Arm extends SubsystemBase {
      */
     public void setSpeed(double speed) {
         arm0.set(speed);
+
     }
 
     /**
@@ -53,7 +57,12 @@ public class Arm extends SubsystemBase {
         return encoder.getPosition();
     }
 
+    /**
+     * Set the arm's reference position for PID control. 
+     * @param position position in motor units.
+     */
     public void setPos(double position) {
+        this.cachedRefPos = position;
         pidController.setReference(position, ControlType.kPosition);
     }
 }

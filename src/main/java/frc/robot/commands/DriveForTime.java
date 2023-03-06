@@ -30,7 +30,7 @@ public class DriveForTime extends CommandBase {
 
     @Override
     public void initialize() {
-        target = Timer.getFPGATimestamp();
+        this.target = Timer.getFPGATimestamp();
     }
 
     @Override

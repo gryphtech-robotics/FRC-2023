@@ -25,18 +25,16 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         autonomousCommand = robotContainer.getAutonomousCommand();
 
-        if (autonomousCommand != null) {
+        if (autonomousCommand != null)
             autonomousCommand.schedule();
-        }
 
         System.out.println("### Entering autonomous period. ###");
     }
 
     @Override
     public void teleopInit() {
-        if (autonomousCommand != null) {
+        if (autonomousCommand != null)
             autonomousCommand.cancel();
-        }
 
         System.out.println("### Entering teleop period. ###");
     }

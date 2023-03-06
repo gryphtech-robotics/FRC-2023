@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Arm;
@@ -31,13 +30,12 @@ public class ManualArmRotation extends CommandBase {
     }
 
     @Override
-    public void end(boolean isInterupted) {
-        arm.setSpeed(0.0);
-    }
-
-    @Override
     public boolean isFinished() {
         return false;
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        arm.setSpeed(0.0);
+    }
 }

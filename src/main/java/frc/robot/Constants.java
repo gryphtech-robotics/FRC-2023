@@ -35,11 +35,16 @@ public class Constants {
 
     public static class PID {
         public static final double ARM_P = 0.007;
+        public static final double CLAMP_P = 0.001;
         //public static final double ARM_FF = 0.2;
     
         public static final double POS_TOP = -5;
         public static final double POS_BOTTOM = -90;
         public static final double POS_L2 = -48;
+        /**
+         * ! This needs to be changed its not accurate and will hurt the robot!!
+         */
+        public static final double POS_C_OPEN = 10; // THIS NEEDS TO BE CHANGED!!!!!!!!!
 
     }
 }
