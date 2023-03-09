@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Clamp;
 
 public class ClampMovement extends CommandBase {
@@ -22,11 +23,12 @@ public class ClampMovement extends CommandBase {
     public void execute() {
         if(opCode == 200) {
             if(!clamp.getLimit())
-                clamp.setSpeed(-0.1);
+                clamp.setSpeed(-0.15);
             else
                 clamp.setSpeed(0.0);
+                clamp.setPos(Constants.PID.POS_C_OPEN);
         } else if(opCode == 400)
-            clamp.setSpeed(0.1);
+            clamp.setSpeed(0.15);
         else
             clamp.setSpeed(0.0);
     }

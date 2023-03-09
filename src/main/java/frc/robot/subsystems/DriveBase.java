@@ -31,8 +31,8 @@ public class DriveBase extends SubsystemBase {
      * @param throttle Throttle multiplier. Usually supplied by the joystick throttle.
      */
     public void setSpeed(double x, double y, double throttle) {
-        left0.set((x + y) * throttle);
-        right0.set((x - y) * throttle);
+        left0.set((-x + y) * throttle);
+        right0.set((-x - y) * throttle);
     }
 
     /**

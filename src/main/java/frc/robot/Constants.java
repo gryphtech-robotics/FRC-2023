@@ -35,16 +35,20 @@ public class Constants {
 
     public static class PID {
         public static final double ARM_P = 0.007;
-        public static final double CLAMP_P = 0.001;
-        //public static final double ARM_FF = 0.2;
+        public static final double CLAMP_P = 0.0109;
     
         public static final double POS_TOP = -5;
-        public static final double POS_BOTTOM = -90;
+        public static final double POS_BOTTOM = -85;
         public static final double POS_L2 = -48;
-        /**
-         * ! This needs to be changed its not accurate and will hurt the robot!!
-         */
-        public static final double POS_C_OPEN = 10; // THIS NEEDS TO BE CHANGED!!!!!!!!!
+        public static final double POS_C_OPEN = -20000; 
+    }
 
+    /**
+     * ! These are not accurate and should not be used yet. Need to be found by analyzing sysid_data JSON files.
+     */
+    public static class Pathfinding {
+        public static final double ksVolts = 0.0;
+        public static final double kvVoltSecondsPerMeter = 0.0;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.0;
     }
 }

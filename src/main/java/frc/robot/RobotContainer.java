@@ -25,9 +25,8 @@ public class RobotContainer {
         CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 200));
         CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, 400));
         
-        CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos())));
-        // IMPORTANT DO NOT RUN THIS WITHOUT A REAL VALUE. IT NEEDS TO BE DETERMINED BY TESTING.
-        CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN))); 
+        CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
+        CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp)); 
 
         CopilotController.y().whileTrue(new ManualArmRotation(arm, 200));
         CopilotController.a().whileTrue(new ManualArmRotation(arm, 400));
@@ -40,9 +39,9 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(
-            new DriveForTime(driveBase, 0.4, 4),
-            new InstantCommand(() -> arm.setPos(PID.POS_L2)),
-            new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN))
+            new DriveForTime(driveBase, 0.25, 6),
+            new InstantCommand(() -> arm.setPos(PID.POS_L2))//,
+            //new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN))
         );
     }
 } 
