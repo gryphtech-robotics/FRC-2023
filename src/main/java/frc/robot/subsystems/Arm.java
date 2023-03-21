@@ -45,7 +45,7 @@ public class Arm extends SubsystemBase {
 
         talon.configFactoryDefault();
         talon.setNeutralMode(NeutralMode.Coast);
-        talon.config_kP(0, 0.0);
+        talon.config_kP(0, Constants.PID.ARM_EXT_P);
         talon.config_kI(0, 0.0);
         talon.config_kD(0, 0.0);
         talon.config_kF(0, 0.0);
@@ -64,7 +64,6 @@ public class Arm extends SubsystemBase {
      */
     public void setSpeed(double speed) {
         arm0.set(speed);
-
     }
 
     /**
@@ -85,15 +84,12 @@ public class Arm extends SubsystemBase {
         pidController.setReference(position, ControlType.kPosition);
     }
 
-    public void armExtension(double direction){
+    public void setExtensionSpeed(double direction){
         talon.set(ControlMode.PercentOutput, direction);
     }
 
-    public void armToMiddleTarget(){
-        talon.set(ControlMode.Position, encoderPositions.ARM_MIDDLE_TARGET);
+    public void setExtensionPos(double pos){
+        talon.set(ControlMode.Position, pos);
     }
 
-    public void armFullyClosed(){
-        talon.set(ControlMode.Position, 0.0);
-    }
 }
