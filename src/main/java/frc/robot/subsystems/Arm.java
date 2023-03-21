@@ -1,24 +1,35 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+
+
+import frc.robot.Constants.*;
 import frc.robot.Constants;
 
+
 public class Arm extends SubsystemBase {
-    private final CANSparkMax arm0 = new CANSparkMax(Constants.CanIDs.ARM_0, MotorType.kBrushless);
-    private final CANSparkMax arm1 = new CANSparkMax(Constants.CanIDs.ARM_1, MotorType.kBrushless);
+    private final CANSparkMax arm0 = new CANSparkMax(CanIDs.ARM_0, MotorType.kBrushless);
+    private final CANSparkMax arm1 = new CANSparkMax(CanIDs.ARM_1, MotorType.kBrushless);
 
     private final RelativeEncoder encoder = arm0.getEncoder();
     private final SparkMaxPIDController pidController = arm0.getPIDController();
 
     private double cachedRefPos = 0.0;
+
+    private final TalonFX talon = new TalonFX(CanIDs.ARM_TALON);
 
     public Arm() {
         arm0.restoreFactoryDefaults();
@@ -27,10 +38,18 @@ public class Arm extends SubsystemBase {
         arm1.follow(arm0);
         
         pidController.setFeedbackDevice(encoder);
-        pidController.setP(Constants.PID.ARM_P);
+        pidController.setP(PID.ARM_P);
 
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
         encoder.setPosition(0.0);
+
+        talon.configFactoryDefault();
+        talon.setNeutralMode(NeutralMode.Coast);
+        talon.config_kP(0, 0.0);
+        talon.config_kI(0, 0.0);
+        talon.config_kD(0, 0.0);
+        talon.config_kF(0, 0.0);
+        talon.setSelectedSensorPosition(0.0);
     }
 
     @Override
@@ -64,5 +83,17 @@ public class Arm extends SubsystemBase {
     public void setPos(double position) {
         this.cachedRefPos = position;
         pidController.setReference(position, ControlType.kPosition);
+    }
+
+    public void armExtension(double direction){
+        talon.set(ControlMode.PercentOutput, direction);
+    }
+
+    public void armToMiddleTarget(){
+        talon.set(ControlMode.Position, encoderPositions.ARM_MIDDLE_TARGET);
+    }
+
+    public void armFullyClosed(){
+        talon.set(ControlMode.Position, 0.0);
     }
 }

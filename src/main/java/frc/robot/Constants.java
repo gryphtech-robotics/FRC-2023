@@ -20,6 +20,7 @@ public class Constants {
         public static final int RIGHT_DRIVE_1 = 21;
 
         public static final int CLAMP_TALON = 46;
+        public static final int ARM_TALON = 5;
 
         public static final int ARM_0 = 61;
         public static final int ARM_1 = 31;
@@ -41,6 +42,7 @@ public class Constants {
         public static final double POS_BOTTOM = -85;
         public static final double POS_L2 = -48;
         public static final double POS_C_OPEN = -20000; 
+
     }
 
     /**
@@ -50,5 +52,9 @@ public class Constants {
         public static final double ksVolts = 0.0;
         public static final double kvVoltSecondsPerMeter = 0.0;
         public static final double kaVoltSecondsSquaredPerMeter = 0.0;
+    }
+
+    public static class encoderPositions{
+        public static final double ARM_MIDDLE_TARGET = 0.0;
     }
 }
