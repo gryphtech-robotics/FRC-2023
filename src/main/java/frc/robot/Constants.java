@@ -14,16 +14,16 @@ public class Constants {
     }
 
     public static class CanIDs {
-        public static final int LEFT_DRIVE_0 = 40;
-        public static final int RIGHT_DRIVE_0 = 23;
-        public static final int LEFT_DRIVE_1 = 20;
-        public static final int RIGHT_DRIVE_1 = 21;
+        public static final int LEFT_DRIVE_0 = 4;
+        public static final int RIGHT_DRIVE_0 = 1;
+        public static final int LEFT_DRIVE_1 = 3;
+        public static final int RIGHT_DRIVE_1 = 2;
 
         public static final int CLAMP_TALON = 46;
         public static final int ARM_TALON = 5;
 
-        public static final int ARM_0 = 61;
-        public static final int ARM_1 = 31;
+        public static final int ARM_0 = 5;
+        public static final int ARM_1 = 6;
     }
 
     public static class etcIDs {

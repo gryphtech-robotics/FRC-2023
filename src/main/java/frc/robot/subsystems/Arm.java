@@ -84,8 +84,8 @@ public class Arm extends SubsystemBase {
         pidController.setReference(position, ControlType.kPosition);
     }
 
-    public void setExtensionSpeed(double direction){
-        talon.set(ControlMode.PercentOutput, direction);
+    public void setExtensionSpeed(double speed){
+        talon.set(ControlMode.PercentOutput, speed);
     }
 
     public void setExtensionPos(double pos){

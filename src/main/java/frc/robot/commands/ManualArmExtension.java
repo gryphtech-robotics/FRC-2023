@@ -4,17 +4,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Arm;
 
-public class ManualArmRotation extends CommandBase {
+public class ManualArmExtension extends CommandBase{
+
     private final Arm arm;
     private final double opCode;
 
-    public ManualArmRotation(Arm arm, double opCode) {
+    public ManualArmExtension(Arm arm, double opCode){
         this.arm = arm;
         this.opCode = opCode;
 
         addRequirements(arm);
     }
-
+    
     /**
      * A 200 signal will cause the arm to rotate upwards.
      * A 400 signal will cause the arm to rotate downwards.
@@ -22,11 +23,11 @@ public class ManualArmRotation extends CommandBase {
     @Override
     public void execute() {
         if(opCode == 200)
-            arm.setSpeed(0.5);
+            arm.setExtensionSpeed(0.3);
         else if(opCode == 400)
-            arm.setSpeed(-0.5);
+            arm.setExtensionSpeed(-0.3);
         else 
-            arm.setSpeed(0.0);
+            arm.setExtensionSpeed(0.0);
     }
 
     @Override
@@ -36,6 +37,6 @@ public class ManualArmRotation extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        arm.setSpeed(0.0);
+        arm.setExtensionSpeed(0.0);
     }
 }

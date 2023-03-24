@@ -36,9 +36,11 @@ public class RobotContainer {
         CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
 
-        CopilotController.start().whileTrue(new InstantCommand(() -> arm.setExtensionPos(encoderPositions.ARM_MIDDLE_TARGET)));
-        CopilotController.back().whileTrue(new InstantCommand(() -> arm.setExtensionPos(0)));
+        // CopilotController.start().whileTrue(new InstantCommand(() -> arm.setExtensionPos(encoderPositions.ARM_MIDDLE_TARGET)));
+        // CopilotController.back().whileTrue(new InstantCommand(() -> arm.setExtensionPos(0)));
 
+        CopilotController.start().whileTrue(new ManualArmExtension(arm, 200));
+        CopilotController.back().whileTrue(new ManualArmExtension(arm, 400));
     }
 
     public Command getAutonomousCommand() {
