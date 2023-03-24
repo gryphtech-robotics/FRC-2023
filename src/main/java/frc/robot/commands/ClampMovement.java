@@ -16,18 +16,18 @@ public class ClampMovement extends CommandBase {
     }
 
     /**
-     * A 200 code signals the clamp to open, as long as the limit switch is not being pressed.
-     * A 400 code signals the clamp to close.
+     * A 1 code signals the clamp to open, as long as the limit switch is not being pressed.
+     * A -1 code signals the clamp to close.
      */
     @Override
     public void execute() {
-        if(opCode == 200) {
+        if(opCode == 1) {
             if(!clamp.getLimit())
                 clamp.setSpeed(-0.15);
             else
                 clamp.setSpeed(0.0);
                 clamp.setPos(Constants.PID.POS_C_OPEN);
-        } else if(opCode == 400)
+        } else if(opCode == -1)
             clamp.setSpeed(0.15);
         else
             clamp.setSpeed(0.0);

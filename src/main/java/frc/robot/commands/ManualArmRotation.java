@@ -16,14 +16,14 @@ public class ManualArmRotation extends CommandBase {
     }
 
     /**
-     * A 200 signal will cause the arm to rotate upwards.
-     * A 400 signal will cause the arm to rotate downwards.
+     * A 1 signal will cause the arm to rotate upwards.
+     * A -1 signal will cause the arm to rotate downwards.
      */
     @Override
     public void execute() {
-        if(opCode == 200)
+        if(opCode == 1)
             arm.setSpeed(0.5);
-        else if(opCode == 400)
+        else if(opCode == -1)
             arm.setSpeed(-0.5);
         else 
             arm.setSpeed(0.0);

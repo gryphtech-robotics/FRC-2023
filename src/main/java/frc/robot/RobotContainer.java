@@ -22,14 +22,14 @@ public class RobotContainer {
     public RobotContainer() {
         driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getRawAxis(Controls.JOYSTICK_X_AXIS), () -> DriveController.getRawAxis(Controls.JOYSTICK_Y_AXIS), () -> (1 + (-DriveController.getRawAxis(Controls.JOYSTICK_THROTTLE))) / 2));
 
-        CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 200));
-        CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, 400));
+        CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 1));
+        CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, -1));
         
         CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
         CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp)); 
 
-        CopilotController.y().whileTrue(new ManualArmRotation(arm, 200));
-        CopilotController.a().whileTrue(new ManualArmRotation(arm, 400));
+        CopilotController.y().whileTrue(new ManualArmRotation(arm, 1));
+        CopilotController.a().whileTrue(new ManualArmRotation(arm, -1));
 
         CopilotController.b().whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
         CopilotController.povUp().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
@@ -39,8 +39,8 @@ public class RobotContainer {
         // CopilotController.start().whileTrue(new InstantCommand(() -> arm.setExtensionPos(encoderPositions.ARM_MIDDLE_TARGET)));
         // CopilotController.back().whileTrue(new InstantCommand(() -> arm.setExtensionPos(0)));
 
-        CopilotController.start().whileTrue(new ManualArmExtension(arm, 200));
-        CopilotController.back().whileTrue(new ManualArmExtension(arm, 400));
+        CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
+        CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
     }
 
     public Command getAutonomousCommand() {
