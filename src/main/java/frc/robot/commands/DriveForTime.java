@@ -45,7 +45,7 @@ public class DriveForTime extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        driveBase.setSpeed(0, 0, 0);
+        driveBase.setSpeed(0, 0);
     }
 
 }

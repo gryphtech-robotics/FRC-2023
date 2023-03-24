@@ -22,9 +22,9 @@ public class ManualArmRotation extends CommandBase {
     @Override
     public void execute() {
         if(opCode == 1)
-            arm.setSpeed(0.5);
+            arm.setSpeed(0.25);
         else if(opCode == -1)
-            arm.setSpeed(-0.5);
+            arm.setSpeed(-0.25);
         else 
             arm.setSpeed(0.0);
     }
