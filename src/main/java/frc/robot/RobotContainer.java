@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.util.Util;
 
 /**
  * Handles command button-assignment.
@@ -65,9 +66,9 @@ public class RobotContainer {
         } else if(m_chooser.getSelected() == "Score") {
             return new SequentialCommandGroup(
                 new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new WaitCommand(2),
-                new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp),
-                new WaitCommand(2),
+                new WaitUntilCommand(() -> arm.getRawPos() == Util.applyDeadband(PID.POS_L2, 100)),
+                new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
+                new WaitUntilCommand(clamp::getLimit),
                 new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
                 new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
                 new DriveForPeriod(driveBase, -0.25, 60)
