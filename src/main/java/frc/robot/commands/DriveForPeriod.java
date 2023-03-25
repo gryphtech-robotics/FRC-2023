@@ -9,40 +9,41 @@ import frc.robot.subsystems.DriveBase;
  * Based heavily off of Team 4152's DriveForTime command.
  * Only used in Autonomous.
  */
-public class DriveForTime extends CommandBase {
+public class DriveForPeriod extends CommandBase {
 
     private final DriveBase driveBase;
     private final double speed;
 
-    private double time = 0;
+    private double elapsed = 0;
     private double target = 0;
 
     /**
      * Please note that speed must be a fraction, because throttle is assumed to be a value of 1.
+     * Period is a value of encoder units.
      */
-    public DriveForTime(DriveBase driveBase, double speed, double seconds) {
+    public DriveForPeriod(DriveBase driveBase, double speed, double period) {
         this.driveBase = driveBase;
         this.speed = speed;
-        this.target = seconds;
+        this.target = period;
 
         addRequirements(driveBase);
     }
 
     @Override
     public void initialize() {
-        time = driveBase.getEncoderMean(); //Timer.getFPGATimestamp();
+        elapsed = driveBase.getEncoderMean(); 
     }
 
     @Override
     public void execute() {
-        System.out.println(time);
+        // System.out.println(elapsed);
         driveBase.setSpeed(speed, 1);
-        time = driveBase.getEncoderMean(); //Timer.getFPGATimestamp();
+        elapsed = driveBase.getEncoderMean();
     }
 
     @Override
     public boolean isFinished() {
-        return time >= target;
+        return elapsed >= target;
     }
 
     @Override
