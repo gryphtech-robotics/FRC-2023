@@ -30,12 +30,14 @@ public class DriveForTime extends CommandBase {
 
     @Override
     public void initialize() {
-        this.time = Timer.getFPGATimestamp();
+        time = driveBase.getEncoderMean(); //Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
+        System.out.println(time);
         driveBase.setSpeed(speed, 1);
+        time = driveBase.getEncoderMean(); //Timer.getFPGATimestamp();
     }
 
     @Override

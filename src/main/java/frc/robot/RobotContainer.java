@@ -27,9 +27,9 @@ public class RobotContainer {
         driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getRawAxis(Controls.JOYSTICK_X_AXIS), () -> DriveController.getRawAxis(Controls.JOYSTICK_Y_AXIS), () -> (1 + (-DriveController.getRawAxis(Controls.JOYSTICK_THROTTLE))) / 2));
         configureBindings();
 
-        m_chooser.setDefaultOption("NO AUTO", "nothing");
-        m_chooser.addOption("SCORE", "score");
-        m_chooser.addOption("TAXI", "taxi");
+        m_chooser.setDefaultOption("NO AUTO", "Nothing");
+        m_chooser.addOption("SCORE", "Score");
+        m_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(m_chooser);
     }
 
@@ -55,19 +55,20 @@ public class RobotContainer {
         // CopilotController.start().whileTrue(new InstantCommand(() -> arm.setExtensionPos(encoderPositions.ARM_MIDDLE_TARGET)));
         // CopilotController.back().whileTrue(new InstantCommand(() -> arm.setExtensionPos(0)));
 
-        CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
-        CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
+       // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
+       // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
     }
 
     public Command getAutonomousCommand() {
-        if(m_chooser.getSelected() == "taxi") {
-            return new DriveForTime(driveBase, -0.25, 6);
-        } else if(m_chooser.getSelected() == "score") {
+        if(m_chooser.getSelected() == "Taxi") {
+            return new DriveForTime(driveBase, -0.25, 60);
+        } else if(m_chooser.getSelected() == "Score") {
             return new SequentialCommandGroup(
                 new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp),
-                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
-                new DriveForTime(driveBase, -0.25, 6)
+                new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp)//,
+                //new InstantCommand(() -> clamp.setSpeed(0.0), clamp)//,
+               // new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
+               // new DriveForTime(driveBase, -0.25, 6)
             );
         } else {
             return null;

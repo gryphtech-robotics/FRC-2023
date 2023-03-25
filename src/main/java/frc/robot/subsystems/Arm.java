@@ -23,9 +23,9 @@ public class Arm extends SubsystemBase {
     private final RelativeEncoder encoder = arm0.getEncoder();
     private final SparkMaxPIDController pidController = arm0.getPIDController();
 
-    private double cachedRefPos = 0.0;
+    //    private final TalonFX extension = new TalonFX(CanIDs.ARM_TALON);
 
-    private final TalonFX extension = new TalonFX(CanIDs.ARM_TALON);
+    private double cachedRefPos = 0.0;
 
     public Arm() {
         arm0.restoreFactoryDefaults();
@@ -39,13 +39,13 @@ public class Arm extends SubsystemBase {
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
         encoder.setPosition(0.0);
 
-        extension.configFactoryDefault();
-        extension.setNeutralMode(NeutralMode.Coast);
-        extension.config_kP(0, Constants.PID.ARM_EXT_P);
-        extension.config_kI(0, 0.0);
-        extension.config_kD(0, 0.0);
-        extension.config_kF(0, 0.0);
-        extension.setSelectedSensorPosition(0.0);
+        // extension.configFactoryDefault();
+        // extension.setNeutralMode(NeutralMode.Coast);
+        // extension.config_kP(0, Constants.PID.ARM_EXT_P);
+        // extension.config_kI(0, 0.0);
+        // extension.config_kD(0, 0.0);
+        // extension.config_kF(0, 0.0);
+        // extension.setSelectedSensorPosition(0.0);
     }
 
     @Override
@@ -80,12 +80,12 @@ public class Arm extends SubsystemBase {
         pidController.setReference(position, ControlType.kPosition);
     }
 
-    public void setExtensionSpeed(double speed){
-        extension.set(ControlMode.PercentOutput, speed);
-    }
+    // public void setExtensionSpeed(double speed){
+    //     extension.set(ControlMode.PercentOutput, speed);
+    // }
 
-    public void setExtensionPos(double pos){
-        extension.set(ControlMode.Position, pos);
-    }
+    // public void setExtensionPos(double pos){
+    //     extension.set(ControlMode.Position, pos);
+    // }
 
 }

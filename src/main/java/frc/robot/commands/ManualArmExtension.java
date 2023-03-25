@@ -20,23 +20,23 @@ public class ManualArmExtension extends CommandBase{
      * A 1 signal will cause the arm to rotate upwards.
      * A -1 signal will cause the arm to rotate downwards.
      */
-    @Override
-    public void execute() {
-        if(opCode == 1)
-            arm.setExtensionSpeed(0.3);
-        else if(opCode == -1)
-            arm.setExtensionSpeed(-0.3);
-        else 
-            arm.setExtensionSpeed(0.0);
-    }
+    // @Override
+    // public void execute() {
+    //     if(opCode == 1)
+    //         arm.setExtensionSpeed(0.3);
+    //     else if(opCode == -1)
+    //         arm.setExtensionSpeed(-0.3);
+    //     else 
+    //         arm.setExtensionSpeed(0.0);
+    // }
 
     @Override
     public boolean isFinished() {
         return false;
     }
 
-    @Override
-    public void end(boolean interrupted) {
-        arm.setExtensionSpeed(0.0);
-    }
+    // @Override
+    // public void end(boolean interrupted) {
+    //     arm.setExtensionSpeed(0.0);
+    // }
 }

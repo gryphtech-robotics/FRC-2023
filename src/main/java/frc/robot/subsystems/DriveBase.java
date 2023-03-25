@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -11,7 +12,10 @@ public class DriveBase extends SubsystemBase {
     private final CANSparkMax right0 = new CANSparkMax(CanIDs.RIGHT_DRIVE_0, MotorType.kBrushless);
     private final CANSparkMax left1 = new CANSparkMax(CanIDs.LEFT_DRIVE_1, MotorType.kBrushless);
     private final CANSparkMax right1 = new CANSparkMax(CanIDs.RIGHT_DRIVE_1, MotorType.kBrushless);
-
+    
+    private final RelativeEncoder left0Encoder = left0.getEncoder();
+    private final RelativeEncoder right0Encoder = right0.getEncoder();
+ 
     public DriveBase() {
         left0.restoreFactoryDefaults();
         left1.restoreFactoryDefaults();
@@ -19,6 +23,9 @@ public class DriveBase extends SubsystemBase {
         right1.restoreFactoryDefaults();
 
         right0.setInverted(true);
+
+        left0Encoder.setPosition(0);
+        right0Encoder.setPosition(0);
 
         left1.follow(left0);
         right1.follow(right0);
@@ -44,5 +51,9 @@ public class DriveBase extends SubsystemBase {
     public void setSpeed(double speed, double throttle) {
         left0.set(speed * throttle);
         right0.set(speed * throttle);
+    }
+
+    public double getEncoderMean() {
+        return Math.abs(((left0Encoder.getPosition() + right0Encoder.getPosition()) / 2));
     }
 }
