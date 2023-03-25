@@ -61,14 +61,16 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         if(m_chooser.getSelected() == "Taxi") {
-            return new DriveForTime(driveBase, -0.25, 60);
+            return new DriveForPeriod(driveBase, -0.25, 60);
         } else if(m_chooser.getSelected() == "Score") {
             return new SequentialCommandGroup(
                 new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp)//,
-                //new InstantCommand(() -> clamp.setSpeed(0.0), clamp)//,
-               // new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
-               // new DriveForTime(driveBase, -0.25, 6)
+                new WaitCommand(2),
+                new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp),
+                new WaitCommand(2),
+                new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
+                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
+                new DriveForPeriod(driveBase, -0.25, 60)
             );
         } else {
             return null;
