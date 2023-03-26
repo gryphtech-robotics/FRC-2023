@@ -34,7 +34,7 @@ public class DriveBase extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("DriveEncoderMean", getEncoderMean());
-        SmartDashboard.putNumber("DriveAbsoluteEncoderMean", getEncoderMean(false));
+        SmartDashboard.putNumber("PriorityDriveEncoder", getEncoderMean(false));
     }
 
     /**

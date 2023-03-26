@@ -11,7 +11,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
 /**
- * Handles command button-assignment.
+ * Handles command button assignment and scheduling.
  */
 public class RobotContainer {
     private Joystick DriveController = new Joystick(USB.DRIVER);
@@ -103,8 +103,7 @@ public class RobotContainer {
      * Returns a command sequence to be run during test mode.
      */
     public Command getTestCommand() {
-        return new DriveForPeriod(driveBase, 1, 100);
-        // return new Rotate(driveBase, 0.1, 25);
+        return new Rotate(driveBase, 0.1, 25);
     }
 
     /**
