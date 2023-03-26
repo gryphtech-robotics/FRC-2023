@@ -22,11 +22,11 @@ public class ClampMovement extends CommandBase {
     @Override
     public void execute() {
         /**
-         * This is insanely stupid and bugged.
+         * ? This is insanely stupid and weirdly bugged.
          * 
-         * Something with the logic causes it to go about 25% of the speed that you actually supply.
-         * Without this logic (the clamp.getLimit() check), the clamp will go **much** faster, so the values need to be tweaked.
-         * For this competition it's better to just leave it as it, because to be honest I have no clue why an if statement causes this behavior.
+         * ? Something with the logic causes it to go about 25% of the speed that you actually supply.
+         * ? Without this logic (the clamp.getLimit() check), the clamp will go **much** faster, so the values need to be tweaked.
+         * ? For this competition it's better to just leave it as it, because to be honest I have no clue why an if statement causes this behavior.
          */
         if(opCode == 1) {
             if(!clamp.getLimit())
