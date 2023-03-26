@@ -47,7 +47,7 @@ public class Clamp extends SubsystemBase {
      */
     public void setPos(double pos) {
         this.cachedRefPos = pos;
-        talon.set(ControlMode.Position, Util.applyDeadband(pos, 100));
+        talon.set(ControlMode.Position, Util.applyDeadband(pos, 25));
     }
 
     /**

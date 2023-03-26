@@ -23,7 +23,7 @@ public class ClampMovement extends CommandBase {
     public void execute() {
         if(opCode == 1) {
             if(!clamp.getLimit())
-                clamp.setSpeed(-0.33 );
+                clamp.setSpeed(-1);
             else
                 clamp.setSpeed(0.0);
                 clamp.setPos(Constants.PID.POS_C_OPEN);

@@ -32,7 +32,8 @@ public class DriveBase extends SubsystemBase {
     }
 
     /**
-     * Set the drivetrain's motor speed, allowing for fine control. 
+     * Control the x and y components of the drivetrain's motor speed, allowing for fine control. 
+     * Used only for joystick drive.
      * @param x X value. Usually supplied by joystick x axis.
      * @param y Y value. Usually supplied by joystick y axis.
      * @param throttle Throttle multiplier. Usually supplied by the joystick throttle.
@@ -43,8 +44,8 @@ public class DriveBase extends SubsystemBase {
     }
 
     /**
-     * Set the drivetrain's motor output to the given speed.
-     * This is a variation of setSpeed used in autonomous.
+     * Set the drivetrain's motor output to the given speed. Does not allow for fine control or varied speeds.
+     * Used for autonomous drive.
      * @param speed Speed value.
      * @param throttle Throttle multiplier.
      */
@@ -53,6 +54,10 @@ public class DriveBase extends SubsystemBase {
         right0.set(speed * throttle);
     }
 
+    /**
+     * Returns the mean value of the drivetrain encoders.
+     * @return mean value. 
+     */
     public double getEncoderMean() {
         return Math.abs(((left0Encoder.getPosition() + right0Encoder.getPosition()) / 2));
     }
