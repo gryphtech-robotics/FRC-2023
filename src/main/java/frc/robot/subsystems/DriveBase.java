@@ -94,5 +94,7 @@ public class DriveBase extends SubsystemBase {
     public void zero() {
         left0Encoder.setPosition(0);
         right0Encoder.setPosition(0);
+        System.out.println("### Zeroed drivetrain lead encoders.");
+
     }
 }

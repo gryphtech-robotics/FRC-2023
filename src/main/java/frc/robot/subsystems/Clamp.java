@@ -73,5 +73,6 @@ public class Clamp extends SubsystemBase {
     public void zero() {
         cachedRefPos = 0.0;
         talon.setSelectedSensorPosition(0.0);
+        System.out.println("### Zeroed clamp encoder and reset cachedRefPos.");
     }
 }

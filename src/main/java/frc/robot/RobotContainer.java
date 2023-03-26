@@ -103,10 +103,7 @@ public class RobotContainer {
      * Returns a command sequence to be run during test mode.
      */
     public Command getTestCommand() {
-        System.out.println("##########");
-        System.out.println("##########");
-        System.out.println("##########");
-        return new DriveForPeriod(driveBase, 1, 20);
+        return new DriveForPeriod(driveBase, 1, 100);
         // return new Rotate(driveBase, 0.1, 25);
     }
 

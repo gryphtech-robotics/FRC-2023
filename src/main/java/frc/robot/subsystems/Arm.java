@@ -95,5 +95,6 @@ public class Arm extends SubsystemBase {
     public void zero() {
         cachedRefPos = 0.0;
         encoder.setPosition(0.0);
+        System.out.println("### Zeroed arm encoder and reset cachedRefPos.");
     }
 }
