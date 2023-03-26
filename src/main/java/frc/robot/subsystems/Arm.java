@@ -37,7 +37,7 @@ public class Arm extends SubsystemBase {
         pidController.setP(PID.ARM_P);
 
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
-        encoder.setPosition(0.0);
+        zero();
 
         // extension.configFactoryDefault();
         // extension.setNeutralMode(NeutralMode.Coast);
@@ -64,7 +64,8 @@ public class Arm extends SubsystemBase {
 
     /**
      * Gets the raw encoder position of the arm. 
-     * Please note this is incremental, so it is not reflective of the actual motor position.
+     * <p>
+     * * Please note this is incremental, so it is not reflective of the actual motor position.
      * @return value
      */
     public double getRawPos() {
@@ -76,7 +77,7 @@ public class Arm extends SubsystemBase {
      * @param position position in motor units.
      */
     public void setPos(double position) {
-        this.cachedRefPos = position;
+        cachedRefPos = position;
         pidController.setReference(position, ControlType.kPosition);
     }
 
@@ -88,4 +89,11 @@ public class Arm extends SubsystemBase {
     //     extension.set(ControlMode.Position, pos);
     // }
 
+    /**
+     * Zeroes the arm encoder and {@link #cachedRefPosition}.
+     */
+    public void zero() {
+        cachedRefPos = 0.0;
+        encoder.setPosition(0.0);
+    }
 }

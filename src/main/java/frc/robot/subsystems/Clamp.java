@@ -12,7 +12,7 @@ import frc.robot.util.Util;
 
 public class Clamp extends SubsystemBase {
     private final TalonFX talon = new TalonFX(CanIDs.CLAMP_TALON);
-    private final DigitalInput input = new DigitalInput(etcIDs.CLAMP_LIMIT);
+    private final DigitalInput input = new DigitalInput(EtcIDs.CLAMP_LIMIT);
 
     private double cachedRefPos = 0.0;
 
@@ -23,14 +23,15 @@ public class Clamp extends SubsystemBase {
         talon.config_kI(0, 0.0);
         talon.config_kD(0, 0.0);
         talon.config_kF(0, 0.0);
-        talon.setSelectedSensorPosition(0.0);
+        
+        zero();
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("ClampEncoderPosition", this.getRawPos());
-        SmartDashboard.putNumber("ClampEncoderTarget", this.cachedRefPos);
-        SmartDashboard.putBoolean("LimitEngaged", this.getLimit());
+        SmartDashboard.putNumber("ClampEncoderPosition", getRawPos());
+        SmartDashboard.putNumber("ClampEncoderTarget", cachedRefPos);
+        SmartDashboard.putBoolean("LimitEngaged", getLimit());
     }
 
     /**
@@ -64,5 +65,13 @@ public class Clamp extends SubsystemBase {
      */
     public boolean getLimit() {
         return input.get();
+    }
+
+    /**
+     * Zero the clamp's encoder and {@link #cachedRefPos}.
+     */
+    public void zero() {
+        cachedRefPos = 0.0;
+        talon.setSelectedSensorPosition(0.0);
     }
 }

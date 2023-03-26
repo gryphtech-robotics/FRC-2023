@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CanIDs;
@@ -24,16 +25,22 @@ public class DriveBase extends SubsystemBase {
 
         right0.setInverted(true);
 
-        left0Encoder.setPosition(0);
-        right0Encoder.setPosition(0);
+        zero();
 
         left1.follow(left0);
         right1.follow(right0);
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("DriveEncoderMean", getEncoderMean());
+        SmartDashboard.putNumber("DriveAbsoluteEncoderMean", getEncoderMean(false));
+    }
+
     /**
-     * Control the x and y components of the drivetrain's motor speed, allowing for fine control. 
-     * Used only for joystick drive.
+     * Control the x and y components of the drivetrain's motor speed, allowing for fine control.
+     * <p> 
+     * * Used only for joystick drive.
      * @param x X value. Usually supplied by joystick x axis.
      * @param y Y value. Usually supplied by joystick y axis.
      * @param throttle Throttle multiplier. Usually supplied by the joystick throttle.
@@ -45,7 +52,8 @@ public class DriveBase extends SubsystemBase {
 
     /**
      * Set the drivetrain's motor output to the given speed. Does not allow for fine control or varied speeds.
-     * Used for autonomous drive.
+     * <p>
+     * * Used for autonomous drive.
      * @param speed Speed value.
      * @param throttle Throttle multiplier.
      */
@@ -68,11 +76,23 @@ public class DriveBase extends SubsystemBase {
     }
 
     /**
-     * Returns the mean value of the drivetrain encoders.
-     * @param absolute boolean absolute
+     * Alternative method to return the mean value of the drivetrain encoders.
+     * @param absolute {boolean} Whether to use absolute values or to favour the higher of the two encoder values.
      * @return mean value. 
      */
     public double getEncoderMean(boolean absolute) {
-        return Math.abs(((Math.abs(left0Encoder.getPosition()) + Math.abs(right0Encoder.getPosition())) / 2));
+        if(absolute) {
+            return Math.abs(((Math.abs(left0Encoder.getPosition()) + Math.abs(right0Encoder.getPosition())) / 2));
+        } else {
+            return Math.max(left0Encoder.getPosition(), right0Encoder.getPosition());
+        }
+    }
+
+    /**
+     * Zeros the left and right drive-lead encoders.
+     */
+    public void zero() {
+        left0Encoder.setPosition(0);
+        right0Encoder.setPosition(0);
     }
 }

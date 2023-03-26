@@ -26,7 +26,7 @@ public class Constants {
         public static final int ARM_1 = 16;
     }
 
-    public static class etcIDs {
+    public static class EtcIDs {
         public static final int CLAMP_LIMIT = 0;
     }    
 
@@ -44,18 +44,5 @@ public class Constants {
         public static final double POS_BOTTOM = -85;
         public static final double POS_L2 = -48;
         public static final double POS_C_OPEN = -20000; 
-    }
-
-    /**
-     * ! These are not accurate and should not be used yet. Need to be found by analyzing sysid_data JSON files.
-     */
-    public static class Pathfinding {
-        public static final double ksVolts = 0.0;
-        public static final double kvVoltSecondsPerMeter = 0.0;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.0;
-    }
-
-    public static class encoderPositions{
-        public static final double ARM_MIDDLE_TARGET = 0.0;
     }
 }

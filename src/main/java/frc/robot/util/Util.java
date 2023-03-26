@@ -7,12 +7,4 @@ public class Util {
         else
             return value;
     }
-
-    public static boolean deadCheck(double input, double desired, double band) {
-        if(input - band == desired || input + band == desired) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

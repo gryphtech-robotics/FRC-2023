@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.util.Util;
 
 /**
  * Handles command button-assignment.
@@ -36,8 +35,9 @@ public class RobotContainer {
     }
 
     /**
-     * Configures driver and copilot bindings. 
-     * ! Does not configure the driveBase defaults. That's done in robot container to prioritize it.
+     * Configures driver and copilot command bindings. 
+     * <p>
+     * * This does not configure the driveBase defaults. That's done in {@link #RobotContainer()} ensure prioritization.
      */
     private void configureBindings() {
         CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 1));
@@ -58,6 +58,9 @@ public class RobotContainer {
         // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
     }
 
+    /**
+     * Returns a command sequence to be run during autonomous mode.
+     */
     public Command getAutonomousCommand() {
         if(m_chooser.getSelected() == "Taxi") {
             return new DriveForPeriod(driveBase, -0.25, 70);
@@ -96,9 +99,31 @@ public class RobotContainer {
         }
     }
 
+    /**
+     * Returns a command sequence to be run during test mode.
+     */
     public Command getTestCommand() {
-        System.out.println("Testing mode.");
+        System.out.println("##########");
+        System.out.println("##########");
+        System.out.println("##########");
         return new DriveForPeriod(driveBase, 1, 20);
         // return new Rotate(driveBase, 0.1, 25);
+    }
+
+    /**
+     * Zero the selected encoders and reference values.
+     * @param driveBase Whether to zero the initialized {@link DriveBase} encoders.
+     * @param arm Whether to zero the initialized {@link Arm} encoders.
+     * @param clamp Whether to zero the initialized {@link Clamp} encoder.
+     */
+    public void zeroEncoders(boolean driveBase, boolean arm, boolean clamp) {
+        if(driveBase)
+            this.driveBase.zero();
+        
+        if(arm)
+            this.arm.zero();
+
+        if(clamp)
+            this.clamp.zero();
     }
 } 

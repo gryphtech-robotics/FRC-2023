@@ -20,7 +20,7 @@ public class DriveWithJoystick extends CommandBase {
 
     @Override
     public void execute() {
-        driveBase.setSpeed(this.x.getAsDouble(), this.y.getAsDouble(), this.throttle.getAsDouble());
+        driveBase.setSpeed(x.getAsDouble(), y.getAsDouble(), throttle.getAsDouble());
     }
 
     @Override
