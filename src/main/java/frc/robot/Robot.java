@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     public void testInit() {
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
+        
         testCommand = robotContainer.getTestCommand();
        
         if (testCommand != null)
