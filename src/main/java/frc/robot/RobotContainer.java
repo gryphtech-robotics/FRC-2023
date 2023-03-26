@@ -80,8 +80,25 @@ public class RobotContainer {
                 new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
                 new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm)
             );
+        } else if(m_chooser.getSelected() == "Score2") {
+            return new SequentialCommandGroup(
+                new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
+                new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
+                new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
+                new WaitUntilCommand(clamp::getLimit),
+                new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
+                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
+                new DriveForPeriod(driveBase, -0.20, 70)
+
+            );
         } else {
             return null;
         }
+    }
+
+    public Command getTestCommand() {
+        System.out.println("Testing mode.");
+        return new DriveForPeriod(driveBase, 1, 20);
+        // return new Rotate(driveBase, 0.1, 25);
     }
 } 

@@ -54,11 +54,25 @@ public class DriveBase extends SubsystemBase {
         right0.set(speed * throttle);
     }
 
+    public void rotate(double speed, double throttle) {
+        left0.set(speed * throttle);
+        right0.set(-speed * throttle);
+    }
+
     /**
      * Returns the mean value of the drivetrain encoders.
      * @return mean value. 
      */
     public double getEncoderMean() {
         return Math.abs(((left0Encoder.getPosition() + right0Encoder.getPosition()) / 2));
+    }
+
+    /**
+     * Returns the mean value of the drivetrain encoders.
+     * @param absolute boolean absolute
+     * @return mean value. 
+     */
+    public double getEncoderMean(boolean absolute) {
+        return Math.abs(((Math.abs(left0Encoder.getPosition()) + Math.abs(right0Encoder.getPosition())) / 2));
     }
 }
