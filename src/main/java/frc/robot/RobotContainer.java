@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.*;
+import frc.robot.auto.Score;
+import frc.robot.auto.ScoreTaxi;
+import frc.robot.auto.ScoreTwo;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -65,35 +68,11 @@ public class RobotContainer {
         if(m_chooser.getSelected() == "Taxi") {
             return new DriveForPeriod(driveBase, -0.25, 70);
         } else if(m_chooser.getSelected() == "ScoreTaxi") {
-            return new SequentialCommandGroup(
-                new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
-                new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
-                new WaitUntilCommand(clamp::getLimit),
-                new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
-                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
-                new DriveForPeriod(driveBase, -0.20, 70)
-            );  
+            return new ScoreTaxi(arm, clamp, driveBase);
         } else if(m_chooser.getSelected() == "Score") {
-            return new SequentialCommandGroup(
-                new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
-                new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
-                new WaitUntilCommand(clamp::getLimit),
-                new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
-                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm)
-            );
-        } else if(m_chooser.getSelected() == "Score2") {
-            return new SequentialCommandGroup(
-                new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-                new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
-                new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
-                new WaitUntilCommand(clamp::getLimit),
-                new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
-                new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm),
-                new DriveForPeriod(driveBase, -0.20, 70)
-
-            );
+            return new Score(arm, clamp);
+        } else if(m_chooser.getSelected() == "ScoreTwo") {
+            return new ScoreTwo(arm, clamp, driveBase);
         } else {
             return null;
         }

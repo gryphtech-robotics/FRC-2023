@@ -6,18 +6,18 @@ import frc.robot.subsystems.Clamp;
 
 public class ClampMovement extends CommandBase {
     private final Clamp clamp;
-    private final double opCode;
+    private final double direction;
 
-    public ClampMovement(Clamp clamp, double opCode) {
+    public ClampMovement(Clamp clamp, double direction) {
         this.clamp = clamp;
-        this.opCode = opCode;
+        this.direction = direction;
 
         addRequirements(clamp);
     }
 
     /**
-     * A 1 code signals the clamp to open, as long as the limit switch is not being pressed.
-     * A -1 code signals the clamp to close.
+     * A direction value of 1 signals the clamp to open, as long as the limit switch is not being pressed.
+     * A direction value of -1  code signals the clamp to close.
      */
     @Override
     public void execute() {
@@ -28,13 +28,13 @@ public class ClampMovement extends CommandBase {
          * ? Without this logic (the clamp.getLimit() check), the clamp will go **much** faster, so the values need to be tweaked.
          * ? For this competition it's better to just leave it as it, because to be honest I have no clue why an if statement causes this behavior.
          */
-        if(opCode == 1) {
+        if(direction == 1) {
             if(!clamp.getLimit())
                 clamp.setSpeed(-1);
             else 
                 clamp.setSpeed(0.0);
                 clamp.setPos(Constants.PID.POS_C_OPEN);
-        } else if(opCode == -1)
+        } else if(direction == -1)
             clamp.setSpeed(0.25);
         else
             clamp.setSpeed(0.0);
@@ -42,7 +42,7 @@ public class ClampMovement extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(opCode == 1)
+        if(direction == 1)
             return clamp.getLimit();
         else
             return false;

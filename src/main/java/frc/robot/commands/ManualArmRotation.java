@@ -1,16 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.subsystems.Arm;
 
 public class ManualArmRotation extends CommandBase {
     private final Arm arm;
-    private final double opCode;
+    private final double direction;
 
-    public ManualArmRotation(Arm arm, double opCode) {
+    public ManualArmRotation(Arm arm, double direction) {
         this.arm = arm;
-        this.opCode = opCode;
+        this.direction = direction;
 
         addRequirements(arm);
     }
@@ -21,9 +20,9 @@ public class ManualArmRotation extends CommandBase {
      */
     @Override
     public void execute() {
-        if(opCode == 1)
+        if(direction == 1)
             arm.setSpeed(0.25);
-        else if(opCode == -1)
+        else if(direction == -1)
             arm.setSpeed(-0.25);
         else 
             arm.setSpeed(0.0);

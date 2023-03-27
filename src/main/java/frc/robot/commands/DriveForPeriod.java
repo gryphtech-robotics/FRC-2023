@@ -1,19 +1,14 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 
 /**
- * Allows for the robot for drive for a set time period.
- * Based heavily off of Team 4152's DriveForTime command.
- * Only used in Autonomous.
+ * Drive for a period defined by encoder rotations.
  */
 public class DriveForPeriod extends CommandBase {
-
     private final DriveBase driveBase;
     private final double speed;
-
     private double elapsed = 0;
     private double target = 0;
 
@@ -36,7 +31,6 @@ public class DriveForPeriod extends CommandBase {
 
     @Override
     public void execute() {
-        // System.out.println(elapsed);
         driveBase.setSpeed(speed, 1);
         elapsed = driveBase.getEncoderMean();
     }
