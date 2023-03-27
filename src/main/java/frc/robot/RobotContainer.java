@@ -62,19 +62,21 @@ public class RobotContainer {
     }
 
     /**
-     * Returns a command sequence to be run during autonomous mode.
+     * Returns a command routine to be run during autonomous mode.
+     * Routines are defined in {@link frc.robot.auto}.
      */
     public Command getAutonomousCommand() {
-        if(m_chooser.getSelected() == "Taxi") {
-            return new DriveForPeriod(driveBase, -0.25, 70);
-        } else if(m_chooser.getSelected() == "ScoreTaxi") {
-            return new ScoreTaxi(arm, clamp, driveBase);
-        } else if(m_chooser.getSelected() == "Score") {
-            return new Score(arm, clamp);
-        } else if(m_chooser.getSelected() == "ScoreTwo") {
-            return new ScoreTwo(arm, clamp, driveBase);
-        } else {
-            return null;
+        switch(m_chooser.getSelected()) {
+            case "Score":
+                return new Score(arm, clamp);
+            case "ScoreTwo":
+                return new ScoreTwo(arm, clamp, driveBase);
+            case "ScoreTaxi":
+                return new ScoreTaxi(arm, clamp, driveBase);
+            case "Taxi":
+                return new DriveForPeriod(driveBase, -0.25, 70);
+            default:
+                return null;
         }
     }
 
