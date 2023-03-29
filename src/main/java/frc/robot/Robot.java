@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
+        robotContainer.zeroEncoders(true, true, true);
         DriverStation.silenceJoystickConnectionWarning(true);
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();

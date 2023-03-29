@@ -21,21 +21,29 @@ public class Rotate extends CommandBase {
         addRequirements(driveBase);
     }
 
+    public Rotate(DriveBase driveBase, double speed) {
+        this.driveBase = driveBase;
+        this.speed = speed;
+        this.rotation = 100000;
+    }
+
     @Override
     public void initialize() {
-        encoderMean = driveBase.getEncoderMean(true); 
+        encoderMean = driveBase.getEncoderMean(false); 
     }
 
     @Override
     public void execute() {
-        System.out.println(encoderMean);
         driveBase.rotate(speed, 1);
-        encoderMean = driveBase.getEncoderMean(true);
+        encoderMean = driveBase.getEncoderMean(false);
     }
 
     @Override
     public boolean isFinished() {
-        return encoderMean - rotation <= 7;
+        if(rotation > 1000)
+            return false;
+        else 
+            return encoderMean >= rotation;
     }
 
     @Override

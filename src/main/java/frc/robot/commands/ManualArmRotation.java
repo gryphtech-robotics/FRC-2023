@@ -15,8 +15,8 @@ public class ManualArmRotation extends CommandBase {
     }
 
     /**
-     * A 1 signal will cause the arm to rotate upwards.
-     * A -1 signal will cause the arm to rotate downwards.
+     * A direction value of 1 will cause the arm to rotate upwards.
+     * A direction value of -1  signal will cause the arm to rotate downwards.
      */
     @Override
     public void execute() {

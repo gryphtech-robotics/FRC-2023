@@ -32,6 +32,7 @@ public class RobotContainer {
 
         m_chooser.setDefaultOption("NO AUTO", "Nothing");
         m_chooser.addOption("SCORE", "Score");
+        m_chooser.addOption("SCORE TWO", "ScoreTwo");
         m_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
         m_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(m_chooser);
@@ -57,6 +58,7 @@ public class RobotContainer {
         CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
 
+        CopilotController.start().whileTrue(new Rotate(driveBase, 0.1));
         // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
         // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
     }
@@ -70,9 +72,9 @@ public class RobotContainer {
             case "Score":
                 return new Score(arm, clamp);
             case "ScoreTwo":
-                return new ScoreTwo(arm, clamp, driveBase);
+                return new ScoreTwo(arm, clamp, driveBase, 30);
             case "ScoreTaxi":
-                return new ScoreTaxi(arm, clamp, driveBase);
+                return new ScoreTaxi(arm, clamp, driveBase, 70);
             case "Taxi":
                 return new DriveForPeriod(driveBase, -0.25, 70);
             default:
@@ -84,7 +86,7 @@ public class RobotContainer {
      * Returns a command sequence to be run during test mode.
      */
     public Command getTestCommand() {
-        return new Rotate(driveBase, 0.1, 25);
+        return new Rotate(driveBase, 0.2, 32.5);
     }
 
     /**
