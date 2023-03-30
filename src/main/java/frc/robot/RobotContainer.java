@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,8 @@ public class RobotContainer {
         m_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
         m_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(m_chooser);
+
+        CameraServer.startAutomaticCapture();
     }
 
     /**
