@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+
 
 import frc.robot.Constants.*;
 import frc.robot.auto.Score;
@@ -18,7 +20,7 @@ import frc.robot.subsystems.*;
  * Handles command button assignment and scheduling.
  */
 public class RobotContainer {
-    private Joystick DriveController = new Joystick(USB.DRIVER);
+    private CommandJoystick DriveController = new CommandJoystick(USB.DRIVER);
     private CommandXboxController CopilotController = new CommandXboxController(USB.COPILOT);
 
     private final DriveBase driveBase = new DriveBase();
@@ -49,6 +51,11 @@ public class RobotContainer {
     private void configureBindings() {
         CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 1));
         CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, -1));
+
+
+        //copiolet controlls on drive joystick
+        DriveController.button(5).whileTrue(new ClampMovement(clamp, 1));
+        DriveController.button(6).whileTrue(new ClampMovement(clamp, -1));
         
         CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp));
         CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
@@ -56,10 +63,21 @@ public class RobotContainer {
         CopilotController.y().whileTrue(new ManualArmRotation(arm, 1));
         CopilotController.a().whileTrue(new ManualArmRotation(arm, -1));
 
+        //copiolet controlls on drive joystick
+        DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
+        DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
+
         CopilotController.b().whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
         CopilotController.povUp().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
+
+
+        //copiolet controlls on drive joystick
+        DriveController.button(8).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
+        DriveController.button(2).whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
+        DriveController.button(12).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
+        DriveController.button(10).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
 
         CopilotController.start().whileTrue(new Rotate(driveBase, 0.1));
         // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));

@@ -46,8 +46,8 @@ public class Clamp extends SubsystemBase {
      * @param pos position in motor units.
      */
     public void setPos(double pos) {
-        this.cachedRefPos = pos;
-        talon.set(ControlMode.Position, Util.applyDeadband(pos, 25));
+         this.cachedRefPos = pos;
+         talon.set(ControlMode.Position, Util.applyDeadband(pos, 25));
     }
 
     /**
