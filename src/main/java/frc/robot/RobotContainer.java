@@ -30,7 +30,7 @@ public class RobotContainer {
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
-        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getRawAxis(Controls.JOYSTICK_X_AXIS), () -> DriveController.getRawAxis(Controls.JOYSTICK_Y_AXIS), () -> (1 + (-DriveController.getRawAxis(Controls.JOYSTICK_THROTTLE))) / 2));
+        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getX(), () -> DriveController.getY(), () -> (1 + (-DriveController.getThrottle())) / 2));
         configureBindings();
 
         m_chooser.setDefaultOption("NO AUTO", "Nothing");
@@ -41,6 +41,7 @@ public class RobotContainer {
         SmartDashboard.putData(m_chooser);
 
         CameraServer.startAutomaticCapture();
+
     }
 
     /**
