@@ -28,9 +28,9 @@ public class Clamp extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("ClampEncoderPosition", getRawPos());
-        SmartDashboard.putNumber("ClampEncoderTarget", cachedRefPos);
-        SmartDashboard.putBoolean("LimitEngaged", getLimit());
+        SmartDashboard.putNumber("debug/ClampEncoderPosition", getRawPos());
+        SmartDashboard.putNumber("debug/ClampEncoderTarget", cachedRefPos);
+        SmartDashboard.putBoolean("debug/LimitEngaged", getLimit());
     }
 
     /**

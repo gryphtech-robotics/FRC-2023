@@ -48,8 +48,8 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("ArmEncoderPosition", getRawPos());
-        SmartDashboard.putNumber("ArmEncoderTarget", cachedRefPos);
+        SmartDashboard.putNumber("debug/ArmEncoderPosition", getRawPos());
+        SmartDashboard.putNumber("debug/ArmEncoderTarget", cachedRefPos);
     }
 
     /**
