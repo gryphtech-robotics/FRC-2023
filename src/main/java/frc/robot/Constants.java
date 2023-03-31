@@ -2,12 +2,6 @@ package frc.robot;
 
 
 public class Constants {
-    public static class Controls {
-        public static final int JOYSTICK_Y_AXIS = 0;
-        public static final int JOYSTICK_X_AXIS = 1;
-        public static final int JOYSTICK_THROTTLE = 3;
-    }
-
     public static class USB {
         public static final int DRIVER = 0;
         public static final int COPILOT = 1;
