@@ -2,17 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-
-
 import frc.robot.Constants.*;
-import frc.robot.auto.Score;
-import frc.robot.auto.ScoreTaxi;
-import frc.robot.auto.ScoreTwo;
+import frc.robot.auto.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -27,21 +22,30 @@ public class RobotContainer {
     private final Arm arm = new Arm();
     private final Clamp clamp = new Clamp();
 
-    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private final SendableChooser<String> auto_chooser = new SendableChooser<>();
 
-    public RobotContainer() {
+    /**
+     * Configures the robot container.
+     * <p>
+     * * Call with enableTestBindings = true to enable Trent's drive test bindings.
+     * @param enableTestBindings Boolean dictating which binding set to enable.
+     */
+    public RobotContainer(boolean enableTestBindings) {
         driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getX(), () -> DriveController.getY(), () -> (1 + (-DriveController.getThrottle())) / 2));
-        configureBindings();
+        
+       if(enableTestBindings)
+            configureTestBindings();
+        else
+            configureBindings();
 
-        m_chooser.setDefaultOption("NO AUTO", "Nothing");
-        m_chooser.addOption("SCORE", "Score");
-        m_chooser.addOption("SCORE TWO", "ScoreTwo");
-        m_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
-        m_chooser.addOption("TAXI", "Taxi");
-        SmartDashboard.putData(m_chooser);
+        auto_chooser.setDefaultOption("NO AUTO", "Nothing");
+        auto_chooser.addOption("SCORE", "Score");
+        //auto_chooser.addOption("SCORE TWO", "ScoreTwo"); Not feasible in game.
+        auto_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
+        auto_chooser.addOption("TAXI", "Taxi");
+        SmartDashboard.putData(auto_chooser);
 
         CameraServer.startAutomaticCapture();
-
     }
 
     /**
@@ -50,39 +54,43 @@ public class RobotContainer {
      * * This does not configure the driveBase defaults. That's done in {@link #RobotContainer()} ensure prioritization.
      */
     private void configureBindings() {
-        CopilotController.leftBumper().whileTrue(new ClampMovement(clamp, 1));
-        CopilotController.rightBumper().whileTrue(new ClampMovement(clamp, -1));
+        CopilotController.leftBumper().whileTrue(new InstantCommand(() -> clamp.setSpeed(-0.3), clamp))
+            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
+        CopilotController.rightBumper().whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
+            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-
-        //copiolet controlls on drive joystick
-        DriveController.button(5).whileTrue(new ClampMovement(clamp, 1));
-        DriveController.button(6).whileTrue(new ClampMovement(clamp, -1));
-        
         CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp));
         CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
 
         CopilotController.y().whileTrue(new ManualArmRotation(arm, 1));
         CopilotController.a().whileTrue(new ManualArmRotation(arm, -1));
 
-        //copiolet controlls on drive joystick
-        DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
-        DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
-
         CopilotController.b().whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
         CopilotController.povUp().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
 
+        CopilotController.start().whileTrue(new Rotate(driveBase, 0.1));
+        // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
+        // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
+    }
 
-        //copiolet controlls on drive joystick
+    private void configureTestBindings() {
+        // copiolet controlls on drive joystick
+        DriveController.button(5).whileTrue(new InstantCommand(() -> clamp.setSpeed(-0.3), clamp))
+            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
+        DriveController.button(6).whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
+            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
+
+        // copiolet controlls on drive joystick
+        DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
+        DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
+
+        // copiolet controlls on drive joystick
         DriveController.button(8).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         DriveController.button(2).whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
         DriveController.button(12).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
         DriveController.button(10).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
-
-        CopilotController.start().whileTrue(new Rotate(driveBase, 0.1));
-        // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
-        // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
     }
 
     /**
@@ -90,11 +98,11 @@ public class RobotContainer {
      * Routines are defined in {@link frc.robot.auto}.
      */
     public Command getAutonomousCommand() {
-        switch(m_chooser.getSelected()) {
+        switch(auto_chooser.getSelected()) {
             case "Score":
                 return new Score(arm, clamp);
-            case "ScoreTwo":
-                return new ScoreTwo(arm, clamp, driveBase, 30);
+            /*case "ScoreTwo":
+                return new ScoreTwo(arm, clamp, driveBase, 30);*/
             case "ScoreTaxi":
                 return new ScoreTaxi(arm, clamp, driveBase, 70);
             case "Taxi":
@@ -108,7 +116,7 @@ public class RobotContainer {
      * Returns a command sequence to be run during test mode.
      */
     public Command getTestCommand() {
-        return new Rotate(driveBase, 0.2, 32.5);
+        return null;
     }
 
     /**

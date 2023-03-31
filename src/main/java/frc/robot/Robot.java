@@ -20,7 +20,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        robotContainer = new RobotContainer();
+        /**
+         * Call this with enableTestBindings = true to enable Trent's drive test bindings.
+         */
+        robotContainer = new RobotContainer(false);
         field.setRobotPose(LimelightHelper.getBotPose2d("limelight"));
 
         System.out.println("### Robot initializing. ###");
