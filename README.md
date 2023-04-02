@@ -8,8 +8,8 @@
 
 > Philip is headed to the Ontario Provincials! Come swing by the pits at the FirstOntario Center in Hamilton and say hi!
 
-Philip is our entry for this year's FIRST Robotics 
-Competition, <strong>CHARGED UP</strong>.
+Philip is Team 6864's entry for **CHARGED UP**, the FIRST Robotics game of 2023.
+
 <br/>
 <hr>
 
