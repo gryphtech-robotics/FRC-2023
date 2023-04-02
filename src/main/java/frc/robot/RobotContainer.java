@@ -25,22 +25,35 @@ public class RobotContainer {
     private final SendableChooser<String> auto_chooser = new SendableChooser<>();
 
     /**
-     * Configures the robot container.
+     * Configures the robot container without test bindings.
+     * <p>
+     * * Call with enableTestBindings = true to enable Trent's drive test bindings.
+     * @param enableTestBindings Boolean dictating which binding set to enable.
+     */
+    public RobotContainer() {
+        configure(false);
+    }
+
+    /**
+     * Configures the robot container with test bindings.
      * <p>
      * * Call with enableTestBindings = true to enable Trent's drive test bindings.
      * @param enableTestBindings Boolean dictating which binding set to enable.
      */
     public RobotContainer(boolean enableTestBindings) {
-        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getX(), () -> DriveController.getY(), () -> (1 + (-DriveController.getThrottle())) / 2));
+        configure(enableTestBindings);
+    }
+
+    private void configure(boolean enableTestBindings) {
+        driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getY(), () -> DriveController.getX(), () -> (1 + (-DriveController.getThrottle())) / 2));
         
-       if(enableTestBindings)
+        if(enableTestBindings) 
             configureTestBindings();
-        else
+        else 
             configureBindings();
 
-        auto_chooser.setDefaultOption("NO AUTO", "Nothing");
+        auto_chooser.setDefaultOption(  "NO AUTO", "Nothing");
         auto_chooser.addOption("SCORE", "Score");
-        //auto_chooser.addOption("SCORE TWO", "ScoreTwo"); Not feasible in game.
         auto_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
         auto_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(auto_chooser);
@@ -76,17 +89,14 @@ public class RobotContainer {
     }
 
     private void configureTestBindings() {
-        // copiolet controlls on drive joystick
         DriveController.button(5).whileTrue(new InstantCommand(() -> clamp.setSpeed(-0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
         DriveController.button(6).whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-        // copiolet controlls on drive joystick
         DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
         DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
 
-        // copiolet controlls on drive joystick
         DriveController.button(8).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         DriveController.button(2).whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
         DriveController.button(12).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
