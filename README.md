@@ -10,7 +10,6 @@
 
 Philip is Team 6864's entry for **CHARGED UP**, the FIRST Robotics game of 2023.
 
-<br/>
 <hr>
 
 See more about the game [here](https://www.firstinspires.org/robotics/frc/game-and-season), and check out how Philip is preforming [here](https://www.thebluealliance.com/team/6864/2023).
