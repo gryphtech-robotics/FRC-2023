@@ -72,8 +72,9 @@ public class RobotContainer {
         CopilotController.rightBumper().whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-        CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(PID.POS_C_OPEN), clamp));
-        CopilotController.rightTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
+        //CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
+        CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setSpeed(0.073), clamp))
+            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
         CopilotController.y().whileTrue(new ManualArmRotation(arm, 1));
         CopilotController.a().whileTrue(new ManualArmRotation(arm, -1));
@@ -94,8 +95,8 @@ public class RobotContainer {
         DriveController.button(6).whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-        DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
-        DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
+        // DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
+        // DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
 
         DriveController.button(8).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
         DriveController.button(2).whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
