@@ -10,6 +10,7 @@ import frc.robot.Constants.*;
 import frc.robot.auto.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm.ArmRotate;
 
 /**
  * Handles command button assignment and scheduling.
@@ -19,7 +20,7 @@ public class RobotContainer {
     private CommandXboxController CopilotController = new CommandXboxController(USB.COPILOT);
 
     private final DriveBase driveBase = new DriveBase();
-    private final Arm arm = new Arm();
+    private final ArmRotate arm = new ArmRotate();
     private final Clamp clamp = new Clamp();
 
     private final SendableChooser<String> auto_chooser = new SendableChooser<>();
@@ -133,7 +134,7 @@ public class RobotContainer {
     /**
      * Zero the selected encoders and reference values.
      * @param driveBase Whether to zero the initialized {@link DriveBase} encoders.
-     * @param arm Whether to zero the initialized {@link Arm} encoders.
+     * @param arm Whether to zero the initialized {@link ArmRotate} encoders.
      * @param clamp Whether to zero the initialized {@link Clamp} encoder.
      */
     public void zeroEncoders(boolean driveBase, boolean arm, boolean clamp) {

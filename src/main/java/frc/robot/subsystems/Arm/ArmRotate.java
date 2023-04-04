@@ -1,6 +1,5 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Arm;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.RelativeEncoder;
@@ -8,13 +7,12 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 
 import frc.robot.Constants.*;
 import frc.robot.Constants;
 
-public class Arm extends SubsystemBase {
+public class ArmRotate extends SubsystemBase {
     private final CANSparkMax arm0 = new CANSparkMax(CanIDs.ARM_0, MotorType.kBrushless);
     private final CANSparkMax arm1 = new CANSparkMax(CanIDs.ARM_1, MotorType.kBrushless);
 
@@ -25,7 +23,7 @@ public class Arm extends SubsystemBase {
 
     private double cachedRefPos = 0.0;
 
-    public Arm() {
+    public ArmRotate() {
         arm0.restoreFactoryDefaults();
         arm1.restoreFactoryDefaults();
 

@@ -3,8 +3,8 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Arm.ArmRotate;
 import frc.robot.Constants.PID;
 
 /**
@@ -12,10 +12,10 @@ import frc.robot.Constants.PID;
  */
 public class Score extends SequentialCommandGroup {
     /**
-     * @param arm {@link Arm} subsystem
+     * @param arm {@link ArmRotate} subsystem
      * @param clamp {@link Clamp} subsystem
      */
-    public Score (Arm arm, Clamp clamp) {
+    public Score (ArmRotate arm, Clamp clamp) {
         addCommands(
             new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
             new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
