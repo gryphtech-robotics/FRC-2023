@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Arm.ArmRotate;
 
 public class ManualArmRotation extends CommandBase {
-    private final Arm arm;
+    private final ArmRotate arm;
     private final double direction;
 
-    public ManualArmRotation(Arm arm, double direction) {
+    public ManualArmRotation(ArmRotate arm, double direction) {
         this.arm = arm;
         this.direction = direction;
 
