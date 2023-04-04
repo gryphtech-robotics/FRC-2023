@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -7,47 +7,38 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
-import frc.robot.Constants.*;
 import frc.robot.Constants;
 
-public class ArmRotate extends SubsystemBase {
-    private final CANSparkMax arm0 = new CANSparkMax(CanIDs.ARM_0, MotorType.kBrushless);
-    private final CANSparkMax arm1 = new CANSparkMax(CanIDs.ARM_1, MotorType.kBrushless);
+/**
+ * Handles arm rotation.
+ */
+public class ArmRotation extends SubsystemBase {
+    private final CANSparkMax arm0 = new CANSparkMax(Constants.CanIDs.ARM_0, MotorType.kBrushless);
+    private final CANSparkMax arm1 = new CANSparkMax(Constants.CanIDs.ARM_1, MotorType.kBrushless);
 
     private final RelativeEncoder encoder = arm0.getEncoder();
     private final SparkMaxPIDController pidController = arm0.getPIDController();
 
-    //    private final TalonFX extension = new TalonFX(CanIDs.ARM_TALON);
-
     private double cachedRefPos = 0.0;
 
-    public ArmRotate() {
+    public ArmRotation() {
         arm0.restoreFactoryDefaults();
         arm1.restoreFactoryDefaults();
 
         arm1.follow(arm0);
         
         pidController.setFeedbackDevice(encoder);
-        pidController.setP(PID.ARM_P);
+        pidController.setP(Constants.PID.ARM_P);
 
         encoder.setPositionConversionFactor(Constants.Math.ARM_ENCODER_CONVERSION_FACTOR);
-        zero();
 
-        // extension.configFactoryDefault();
-        // extension.setNeutralMode(NeutralMode.Coast);
-        // extension.config_kP(0, Constants.PID.ARM_EXT_P);
-        // extension.config_kI(0, 0.0);
-        // extension.config_kD(0, 0.0);
-        // extension.config_kF(0, 0.0);
-        // extension.setSelectedSensorPosition(0.0);
+        zero();
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("debug/ArmEncoderPosition", getRawPos());
-        SmartDashboard.putNumber("debug/ArmEncoderTarget", cachedRefPos);
+        SmartDashboard.putNumber("debug/RotationEncoderPosition", getRawPos());
+        SmartDashboard.putNumber("debug/RotationEncoderTarget", cachedRefPos);
     }
 
     /**
@@ -72,18 +63,10 @@ public class ArmRotate extends SubsystemBase {
      * Set the arm's reference position for PID control. 
      * @param position position in motor units.
      */
-    public void setPos(double position) {
-        cachedRefPos = position;
-        pidController.setReference(position, ControlType.kPosition);
+    public void setPos(double target) {
+        cachedRefPos = target;
+        pidController.setReference(target, ControlType.kPosition);
     }
-
-    // public void setExtensionSpeed(double speed){
-    //     extension.set(ControlMode.PercentOutput, speed);
-    // }
-
-    // public void setExtensionPos(double pos){
-    //     extension.set(ControlMode.Position, pos);
-    // }
 
     /**
      * Zeroes the arm encoder and {@link #cachedRefPosition}.
@@ -91,6 +74,7 @@ public class ArmRotate extends SubsystemBase {
     public void zero() {
         cachedRefPos = 0.0;
         encoder.setPosition(0.0);
-        System.out.println("### Zeroed arm encoder and reset cachedRefPos.");
+
+        System.out.println("### Zeroed arm rotation encoders and reset cachedRefPos.");
     }
 }

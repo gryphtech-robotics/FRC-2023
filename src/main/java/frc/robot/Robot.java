@@ -47,14 +47,14 @@ public class Robot extends TimedRobot {
         if (testCommand != null)
             testCommand.cancel();
 
-        robotContainer.zeroEncoders(true, false, false);
+        robotContainer.zeroEncoders(true, false, false, false);
 
         System.out.println("### Entering teleoperated period. ###");
     }
 
     @Override
     public void testInit() {
-        robotContainer.zeroEncoders(true, true, true);
+        robotContainer.zeroEncoders(true, true, true, true);
         DriverStation.silenceJoystickConnectionWarning(true);
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();

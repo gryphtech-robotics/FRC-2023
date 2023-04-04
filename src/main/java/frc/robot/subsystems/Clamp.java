@@ -43,11 +43,11 @@ public class Clamp extends SubsystemBase {
 
     /**
      * Set the clamp's reference position for PID control.
-     * @param pos position in motor units.
+     * @param target position in motor units.
      */
-    public void setPos(double pos) {
-         this.cachedRefPos = pos;
-         talon.set(ControlMode.Position, Util.applyDeadband(pos, 25));
+    public void setPos(double target) {
+         this.cachedRefPos = target;
+         talon.set(ControlMode.Position, Util.applyDeadband(target, 25));
     }
 
     /**

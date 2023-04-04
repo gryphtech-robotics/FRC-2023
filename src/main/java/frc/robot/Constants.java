@@ -32,7 +32,7 @@ public class Constants {
     public static class PID {
         public static final double OLD_ARM_P = 0.007;
         public static final double ARM_P = 0.006;
-        public static final double ARM_EXT_P = 0.0;
+        public static final double ARM_EXT_P = 0.0001;
         public static final double CLAMP_P = 0.0109;
     
         public static final double POS_TOP = -5;

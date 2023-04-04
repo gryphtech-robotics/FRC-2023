@@ -10,7 +10,6 @@ import frc.robot.Constants.*;
 import frc.robot.auto.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Arm.ArmRotate;
 
 /**
  * Handles command button assignment and scheduling.
@@ -20,10 +19,13 @@ public class RobotContainer {
     private CommandXboxController CopilotController = new CommandXboxController(USB.COPILOT);
 
     private final DriveBase driveBase = new DriveBase();
-    private final ArmRotate arm = new ArmRotate();
+    private final ArmRotation armRotation = new ArmRotation();
+    private final ArmExtension armExtension = new ArmExtension();
     private final Clamp clamp = new Clamp();
 
     private final SendableChooser<String> auto_chooser = new SendableChooser<>();
+
+    private double extensionTarget = 0;
 
     /**
      * Configures the robot container without test bindings.
@@ -47,6 +49,7 @@ public class RobotContainer {
 
     private void configure(boolean enableTestBindings) {
         driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getY(), () -> DriveController.getX(), () -> (1 + (-DriveController.getThrottle())) / 2));
+        armExtension.setDefaultCommand(new ExtendArm(armExtension, () -> extensionTarget));
         
         if(enableTestBindings) 
             configureTestBindings();
@@ -68,26 +71,30 @@ public class RobotContainer {
      * * This does not configure the driveBase defaults. That's done in {@link #RobotContainer()} ensure prioritization.
      */
     private void configureBindings() {
+        // Bumper + Trigger clamp movement
         CopilotController.leftBumper().whileTrue(new InstantCommand(() -> clamp.setSpeed(-0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
         CopilotController.rightBumper().whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
-
-        //CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setPos(clamp.getRawPos()), clamp));
         CopilotController.leftTrigger().whileTrue(new InstantCommand(() -> clamp.setSpeed(0.073), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-        CopilotController.y().whileTrue(new ManualArmRotation(arm, 1));
-        CopilotController.a().whileTrue(new ManualArmRotation(arm, -1));
+        // Arm Rotation with A and Y buttons.
+        CopilotController.y().whileTrue(new InstantCommand(() -> armRotation.setSpeed(0.25), armRotation))
+            .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), clamp));
+        CopilotController.a().whileTrue(new InstantCommand(() -> armRotation.setSpeed(-0.25), armRotation))
+            .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), armRotation));
 
-        CopilotController.b().whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
-        CopilotController.povUp().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
-        CopilotController.povDown().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
-        CopilotController.povRight().whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
+        // Arm Rotation presets and lock button
+        CopilotController.b().whileTrue(new InstantCommand(() -> armRotation.setPos(armRotation.getRawPos()), armRotation));
+        CopilotController.povUp().whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_TOP), armRotation));
+        CopilotController.povDown().whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_BOTTOM), armRotation));
+        CopilotController.povRight().whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation));
 
-        CopilotController.start().whileTrue(new Rotate(driveBase, 0.1));
-        // CopilotController.start().whileTrue(new ManualArmExtension(arm, 1));
-        // CopilotController.back().whileTrue(new ManualArmExtension(arm, -1));
+        // Arm Extension incrementing. The fact that armExtension has a default command should just tell it to keep running as you update these values.
+        CopilotController.back().whileTrue(new InstantCommand(() -> extensionTarget += 10));
+        CopilotController.start().whileTrue(new InstantCommand(() -> extensionTarget -= 10));
+
     }
 
     private void configureTestBindings() {
@@ -96,13 +103,10 @@ public class RobotContainer {
         DriveController.button(6).whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
-        // DriveController.button(3).whileTrue(new ManualArmRotation(arm, 1));
-        // DriveController.button(4).whileTrue(new ManualArmRotation(arm, -1));
-
-        DriveController.button(8).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm));
-        DriveController.button(2).whileTrue(new InstantCommand(() -> arm.setPos(arm.getRawPos()), arm));
-        DriveController.button(12).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_BOTTOM), arm));
-        DriveController.button(10).whileTrue(new InstantCommand(() -> arm.setPos(PID.POS_L2), arm));
+        DriveController.button(8).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_TOP), armRotation));
+        DriveController.button(2).whileTrue(new InstantCommand(() -> armRotation.setPos(armRotation.getRawPos()), armRotation));
+        DriveController.button(12).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_BOTTOM), armRotation));
+        DriveController.button(10).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation));
     }
 
     /**
@@ -112,11 +116,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         switch(auto_chooser.getSelected()) {
             case "Score":
-                return new Score(arm, clamp);
-            /*case "ScoreTwo":
-                return new ScoreTwo(arm, clamp, driveBase, 30);*/
+                return new Score(armRotation, clamp);
             case "ScoreTaxi":
-                return new ScoreTaxi(arm, clamp, driveBase, 70);
+                return new ScoreTaxi(armRotation, clamp, driveBase, 70);
             case "Taxi":
                 return new DriveForPeriod(driveBase, -0.25, 70);
             default:
@@ -134,15 +136,19 @@ public class RobotContainer {
     /**
      * Zero the selected encoders and reference values.
      * @param driveBase Whether to zero the initialized {@link DriveBase} encoders.
-     * @param arm Whether to zero the initialized {@link ArmRotate} encoders.
+     * @param armRotation Whether to zero the initialized {@link ArmRotate} encoders.
+     * @param armExtension Whether to zero the initialized {@link ArmExtension} encoders.
      * @param clamp Whether to zero the initialized {@link Clamp} encoder.
      */
-    public void zeroEncoders(boolean driveBase, boolean arm, boolean clamp) {
+    public void zeroEncoders(boolean driveBase, boolean armRotation, boolean armExtension, boolean clamp) {
         if(driveBase)
             this.driveBase.zero();
         
-        if(arm)
-            this.arm.zero();
+        if(armRotation)
+            this.armRotation.zero();
+
+        if(armExtension)
+            this.armExtension.zero();
 
         if(clamp)
             this.clamp.zero();
