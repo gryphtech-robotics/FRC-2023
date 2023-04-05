@@ -13,8 +13,7 @@ public class Constants {
         public static final int LEFT_DRIVE_1 = 13;
         public static final int RIGHT_DRIVE_1 = 12;
 
-        public static final int CLAMP_TALON = 46;
-        public static final int ARM_TALON = 5;
+        public static final int CLAMP_TALON = 5;
         public static final int ARM_EXTENDER = 6;
 
         public static final int ARM_0 = 15;
