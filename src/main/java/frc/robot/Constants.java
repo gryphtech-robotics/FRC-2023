@@ -31,12 +31,14 @@ public class Constants {
     public static class PID {
         public static final double OLD_ARM_P = 0.007;
         public static final double ARM_P = 0.006;
-        public static final double ARM_EXT_P = 0.006;
+        public static final double ARM_EXT_P = 0.07;
         public static final double CLAMP_P = 0.0109;
     
         public static final double POS_TOP = -5;
-        public static final double POS_BOTTOM = -85;
-        public static final double POS_L2 = -48;
+        public static final double POS_BOTTOM = -95; // -85;
+        public static final double POS_L2 = -55; //-48;
         public static final double POS_C_OPEN = -20000; 
+
+        public static final double ARM_EXT_LIMIT = -18000;
     }
 }

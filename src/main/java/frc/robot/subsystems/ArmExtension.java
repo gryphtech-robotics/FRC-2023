@@ -28,6 +28,8 @@ public class ArmExtension extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("debug/ExtensionEncoderPosition", getPos());
         SmartDashboard.putNumber("debug/ExtensionEncoderTarget", cachedRefPos);
+        SmartDashboard.putNumber("debug/ExtensionCurrent", extension.getSupplyCurrent());
+        SmartDashboard.putNumber("debug/ExtensionTemperature", extension.getTemperature());
     }
 
     /**
@@ -55,10 +57,12 @@ public class ArmExtension extends SubsystemBase {
         return extension.getSelectedSensorPosition();
     }
 
+    /**
+     * Zeroes the arm extension encoder and {@link #cachedRefPos}.
+     */
     public void zero() {
         cachedRefPos = 0.0;
         extension.setSelectedSensorPosition(0);
         System.out.println("### Zeroed arm extension encoder and reset cachedRefPos.");
-
     }
 }

@@ -37,8 +37,13 @@ public class ArmRotation extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double[] currentArray = { arm0.getOutputCurrent(), arm1.getOutputCurrent() };
+        double[] temperatureArray = { arm0.getMotorTemperature(), arm1.getMotorTemperature() };
+
         SmartDashboard.putNumber("debug/RotationEncoderPosition", getRawPos());
         SmartDashboard.putNumber("debug/RotationEncoderTarget", cachedRefPos);
+        SmartDashboard.putNumberArray("debug/RotationCurrent", currentArray);
+        SmartDashboard.putNumberArray("debug/RotationTemperature", temperatureArray);
     }
 
     /**
@@ -69,7 +74,7 @@ public class ArmRotation extends SubsystemBase {
     }
 
     /**
-     * Zeroes the arm encoder and {@link #cachedRefPosition}.
+     * Zeroes the arm rotation encoders and {@link #cachedRefPos}.
      */
     public void zero() {
         cachedRefPos = 0.0;

@@ -62,6 +62,8 @@ public class RobotContainer {
         auto_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(auto_chooser);
 
+        SmartDashboard.putData("debug/ZeroAll", new InstantCommand(() -> zeroEncoders(true, true, true, true)));
+
         CameraServer.startAutomaticCapture();
     }
 
@@ -80,9 +82,9 @@ public class RobotContainer {
             .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
 
         // Arm Rotation with A and Y buttons.
-        CopilotController.y().whileTrue(new InstantCommand(() -> armRotation.setSpeed(0.25), armRotation))
-            .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), clamp));
-        CopilotController.a().whileTrue(new InstantCommand(() -> armRotation.setSpeed(-0.25), armRotation))
+        CopilotController.y().whileTrue(new InstantCommand(() -> armRotation.setSpeed(0.7), armRotation))
+            .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), armRotation));
+        CopilotController.a().whileTrue(new InstantCommand(() -> armRotation.setSpeed(-0.4), armRotation))
             .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), armRotation));
 
         // Arm Rotation presets and lock button
@@ -92,8 +94,8 @@ public class RobotContainer {
         CopilotController.povRight().whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation));
 
         // Arm Extension incrementing. The fact that armExtension has a default command should just tell it to keep running as you update these values.
-        CopilotController.back().whileTrue(new InstantCommand(() -> extensionTarget += 10).repeatedly());
-        CopilotController.start().whileTrue(new InstantCommand(() -> extensionTarget -= 10).repeatedly());
+        CopilotController.back().whileTrue(new InstantCommand(() -> softLimit(100)).repeatedly());
+        CopilotController.start().whileTrue(new InstantCommand(() -> softLimit(-100)).repeatedly());
     }
 
     private void configureTestBindings() {
@@ -129,7 +131,16 @@ public class RobotContainer {
      * Returns a command sequence to be run during test mode.
      */
     public Command getTestCommand() {
-        return null;
+        return new InstantCommand(() -> zeroEncoders(true, true, true, true));
+    }
+
+    public void softLimit(double incVal) {
+        if((incVal + extensionTarget) < PID.ARM_EXT_LIMIT) 
+            extensionTarget = PID.ARM_EXT_LIMIT;
+        else if ((incVal + extensionTarget) > 0) 
+            extensionTarget = 0;
+        else
+            extensionTarget += incVal;
     }
 
     /**
