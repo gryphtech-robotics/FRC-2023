@@ -9,8 +9,7 @@ import frc.robot.subsystems.DriveBase;
 public class DriveForPeriod extends CommandBase {
     private final DriveBase driveBase;
     private final double speed;
-    private double elapsed = 0;
-    private double target = 0;
+    private double elapsed, target = 0;
 
     /**
      * Please note that speed must be a fraction, because throttle is assumed to be a value of 1.

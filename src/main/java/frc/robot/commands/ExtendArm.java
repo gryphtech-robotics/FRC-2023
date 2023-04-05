@@ -7,7 +7,7 @@ import frc.robot.subsystems.ArmExtension;
 
 public class ExtendArm extends CommandBase {
     private final ArmExtension armExtension;
-    private DoubleSupplier targetPos;
+    private final DoubleSupplier targetPos;
 
     public ExtendArm(ArmExtension armExtension, DoubleSupplier targetPos) {
         this.armExtension = armExtension;
@@ -17,12 +17,8 @@ public class ExtendArm extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
     public void execute() {
-        armExtension.setExtension(targetPos.getAsDouble()); 
+        armExtension.setPos(targetPos.getAsDouble()); 
     }
     
     @Override

@@ -32,7 +32,6 @@ public class ArmExtension extends SubsystemBase {
 
     /**
      * Sets the extension motor speed.
-     * 
      * @param speed Decimal percentage to set as the speed.
      */
     public void setSpeed(double speed) {
@@ -41,17 +40,15 @@ public class ArmExtension extends SubsystemBase {
 
     /**
      * Set the arm extension position.
-     * 
-     * @param targetPos The targeted position in motor units
+     * @param target The targeted position in motor units
      */
-    public void setExtension(double target) {
+    public void setPos(double target) {
         cachedRefPos = target;
         extension.set(ControlMode.Position, target);
     }
 
     /**
      * Gets the extension encoder's raw position.
-     * 
      * @return value
      */
     public double getPos() {

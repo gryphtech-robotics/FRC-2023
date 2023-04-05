@@ -5,8 +5,7 @@ import frc.robot.subsystems.DriveBase;
 
 public class Rotate extends CommandBase {
     private final DriveBase driveBase;
-    private final double speed;
-    private final double rotation;
+    private final double speed, rotation;
     private double encoderMean;
 
     /**
