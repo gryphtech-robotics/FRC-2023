@@ -2,7 +2,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmRotation;
 import frc.robot.commands.DriveForPeriod;
 
 /**
@@ -10,13 +10,13 @@ import frc.robot.commands.DriveForPeriod;
  */
 public class ScoreTaxi extends SequentialCommandGroup {
     /**
-     * @param arm       {@link Arm} subsystem
+     * @param arm       {@link ArmRotation} subsystem
      * @param clamp     {@link Clamp} subsystem
      * @param driveBase {@link DriveBase} subsystem
      */
-    public ScoreTaxi(Arm arm, Clamp clamp, DriveBase driveBase, double period) {
+    public ScoreTaxi(ArmRotation armRotation, Clamp clamp, DriveBase driveBase, double period) {
         addCommands(
-            new Score(arm, clamp),
+            new Score(armRotation, clamp),
             new DriveForPeriod(driveBase, -0.20, period)
         );
   }

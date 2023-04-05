@@ -92,9 +92,8 @@ public class RobotContainer {
         CopilotController.povRight().whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation));
 
         // Arm Extension incrementing. The fact that armExtension has a default command should just tell it to keep running as you update these values.
-        CopilotController.back().whileTrue(new InstantCommand(() -> extensionTarget += 10));
-        CopilotController.start().whileTrue(new InstantCommand(() -> extensionTarget -= 10));
-
+        CopilotController.back().whileTrue(new InstantCommand(() -> extensionTarget += 10).repeatedly());
+        CopilotController.start().whileTrue(new InstantCommand(() -> extensionTarget -= 10).repeatedly());
     }
 
     private void configureTestBindings() {

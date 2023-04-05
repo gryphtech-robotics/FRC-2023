@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Clamp;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmRotation;
 import frc.robot.Constants.PID;
 
 /**
@@ -12,17 +12,17 @@ import frc.robot.Constants.PID;
  */
 public class Score extends SequentialCommandGroup {
     /**
-     * @param arm {@link Arm} subsystem
+     * @param arm {@link ArmRotation} subsystem
      * @param clamp {@link Clamp} subsystem
      */
-    public Score (Arm arm, Clamp clamp) {
+    public Score (ArmRotation armRotation, Clamp clamp) {
         addCommands(
-            new InstantCommand(() -> arm.setPos(PID.POS_L2), arm),
-            new WaitUntilCommand(() -> arm.getRawPos() - PID.POS_L2 <= 7),
+            new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation),
+            new WaitUntilCommand(() -> armRotation.getRawPos() - PID.POS_L2 <= 7),
             new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
             new WaitUntilCommand(clamp::getLimit),
             new InstantCommand(() -> clamp.setSpeed(0.0), clamp),
-            new InstantCommand(() -> arm.setPos(PID.POS_TOP), arm)
+            new InstantCommand(() -> armRotation.setPos(PID.POS_TOP), armRotation)
         );
     }
 }
