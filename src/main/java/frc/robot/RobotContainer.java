@@ -28,36 +28,21 @@ public class RobotContainer {
     private double extensionTarget = 0;
 
     /**
-     * Configures the robot container without test bindings.
-     * <p>
-     * * Call with enableTestBindings = true to enable Trent's drive test bindings.
-     * @param enableTestBindings Boolean dictating which binding set to enable.
+     * Configures the robot container. 
      */
-    public RobotContainer() {
-        configure(false);
-    }
-
-    /**
-     * Configures the robot container with test bindings.
-     * <p>
-     * * Call with enableTestBindings = true to enable Trent's drive test bindings.
-     * @param enableTestBindings Boolean dictating which binding set to enable.
-     */
-    public RobotContainer(boolean enableTestBindings) {
-        configure(enableTestBindings);
-    }
-
-    private void configure(boolean enableTestBindings) {
+     public RobotContainer() {
         driveBase.setDefaultCommand(new DriveWithJoystick(driveBase, () -> DriveController.getY(), () -> DriveController.getX(), () -> (1 + (-DriveController.getThrottle())) / 2));
         armExtension.setDefaultCommand(new ExtendArm(armExtension, () -> extensionTarget));
         
-        if(enableTestBindings) 
-            configureTestBindings();
-        else 
-            configureBindings();
+        configureBindings();
 
-        auto_chooser.setDefaultOption(  "NO AUTO", "Nothing");
+        auto_chooser.setDefaultOption("NO AUTO", "Nothing");
+        auto_chooser.addOption("SCORE BOTTOM", "ScoreLow");
         auto_chooser.addOption("SCORE", "Score");
+        auto_chooser.addOption("SCORE TOP", "ScoreTop");
+        auto_chooser.addOption("SCORE TOP & TAXI", "ScoreTopTaxi");
+        auto_chooser.addOption("SCORE CONE", "ScoreCone");
+        auto_chooser.addOption("SCORE CONE & TAXI", "ScoreConeTaxi");
         auto_chooser.addOption("SCORE & TAXI", "ScoreTaxi");
         auto_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(auto_chooser);
@@ -82,7 +67,7 @@ public class RobotContainer {
         // Arm Rotation with A and Y buttons.
         CopilotController.y().whileTrue(new InstantCommand(() -> armRotation.setSpeed(0.7), armRotation))
             .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), armRotation));
-        CopilotController.a().whileTrue(new InstantCommand(() -> armRotation.setSpeed(-0.4), armRotation))
+        CopilotController.a().whileTrue(new InstantCommand(() -> armRotation.setSpeed(-0.3), armRotation))
             .onFalse(new InstantCommand(() -> armRotation.setSpeed(0.0), armRotation));
 
         // Arm Rotation presets and lock button
@@ -96,30 +81,46 @@ public class RobotContainer {
         CopilotController.start().whileTrue(new InstantCommand(() -> softLimit(-100)).repeatedly());
     }
 
-    private void configureTestBindings() {
-        DriveController.button(5).whileTrue(new InstantCommand(() -> clamp.setSpeed(-0.3), clamp))
-            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
-        DriveController.button(6).whileTrue(new InstantCommand(() -> clamp.setSpeed(0.3), clamp))
-            .onFalse(new InstantCommand(() -> clamp.setSpeed(0.0), clamp));
-
-        DriveController.button(8).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_TOP), armRotation));
-        DriveController.button(2).whileTrue(new InstantCommand(() -> armRotation.setPos(armRotation.getRawPos()), armRotation));
-        DriveController.button(12).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_BOTTOM), armRotation));
-        DriveController.button(10).whileTrue(new InstantCommand(() -> armRotation.setPos(PID.POS_L2), armRotation));
-    }
-
     /**
      * Returns a command routine to be run during autonomous mode.
      * Routines are defined in {@link frc.robot.auto}.
      */
     public Command getAutonomousCommand() {
         switch(auto_chooser.getSelected()) {
+            case "ScoreLow": 
+                return new SequentialCommandGroup(
+                    new InstantCommand(() -> clamp.setSpeed(-0.33), clamp),
+                    new WaitUntilCommand(clamp::getLimit),
+                    new InstantCommand(() -> clamp.setSpeed(0.0), clamp)
+                );
             case "Score":
                 return new Score(armRotation, clamp);
+            case "ScoreTop": 
+                return new SequentialCommandGroup(
+                    new InstantCommand(() -> softLimit(AUTO.ARM_EXT_TOP)),
+                    new Score(armRotation, clamp, AUTO.ARM_ROT_TOP)  
+                );
+            case "ScoreTopTaxi": 
+                return new SequentialCommandGroup(
+                    new InstantCommand(() -> softLimit(AUTO.ARM_EXT_TOP)),
+                    new ScoreTaxi(armRotation, clamp, driveBase, AUTO.OPTIMAL_DRIVE_PERIOD, AUTO.ARM_ROT_TOP)  
+                );
+            case "ScoreCone": 
+                return new SequentialCommandGroup(
+                    new InstantCommand(() -> clamp.setPos(AUTO.CLAMP_CONE), clamp),
+                    new InstantCommand(() -> softLimit(AUTO.ARM_EXT_CONE)),
+                    new Score(armRotation, clamp, AUTO.ARM_ROT_CONE)
+                );
+            case "ScoreConeTaxi":
+                return new SequentialCommandGroup(
+                    new InstantCommand(() -> clamp.setPos(AUTO.CLAMP_CONE), clamp),
+                    new InstantCommand(() -> softLimit(AUTO.ARM_EXT_CONE)),
+                    new ScoreTaxi(armRotation, clamp, driveBase, AUTO.OPTIMAL_DRIVE_PERIOD, AUTO.ARM_ROT_CONE)
+                );
             case "ScoreTaxi":
-                return new ScoreTaxi(armRotation, clamp, driveBase, 70);
+                return new ScoreTaxi(armRotation, clamp, driveBase, AUTO.OPTIMAL_DRIVE_PERIOD);
             case "Taxi":
-                return new DriveForPeriod(driveBase, -0.25, 70);
+                return new DriveForPeriod(driveBase, -0.25, AUTO.OPTIMAL_DRIVE_PERIOD);
             default:
                 return null;
         }
@@ -132,6 +133,10 @@ public class RobotContainer {
         return new InstantCommand(() -> zeroEncoders(true, true, true, true));
     }
 
+    /**
+     * Handle PID target incrementation and soft limits for the arm extension.
+     * @param incVal Increment value
+     */
     public void softLimit(double incVal) {
         if((incVal + extensionTarget) < PID.ARM_EXT_LIMIT) 
             extensionTarget = PID.ARM_EXT_LIMIT;
