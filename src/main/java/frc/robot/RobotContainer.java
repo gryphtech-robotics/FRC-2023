@@ -62,8 +62,6 @@ public class RobotContainer {
         auto_chooser.addOption("TAXI", "Taxi");
         SmartDashboard.putData(auto_chooser);
 
-        SmartDashboard.putData("debug/ZeroAll", new InstantCommand(() -> zeroEncoders(true, true, true, true)));
-
         CameraServer.startAutomaticCapture();
     }
 
